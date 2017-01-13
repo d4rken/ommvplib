@@ -1,15 +1,15 @@
 apply plugin: 'com.github.dcendents.android-maven'
-
+group = publishedGroupId
 install {
     repositories.mavenInstaller {
         pom.project {
+            packaging 'aar'
             name libraryName
             description libraryDescription
             url siteUrl
 
-            packaging 'aar'
-            groupId publishedGroupId
             artifactId artifact
+            groupId publishedGroupId
             version libraryVersion
 
             licenses {
@@ -65,10 +65,10 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
-
+version = libraryVersion
 bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    user = bintrayUser
+    key = bintrayApiKey
     configurations = ['archives']
     pkg {
         repo = bintrayRepo
@@ -83,8 +83,5 @@ bintray {
         vcsUrl = gitUrl
 
         publicDownloadNumbers = true
-        version {
-            name = libraryVersion
-        }
     }
 }

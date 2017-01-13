@@ -55,7 +55,6 @@ ext {
     if (credentialsFile.canRead()) {
         def Properties props = new Properties()
         props.load(new FileInputStream(credentialsFile))
-
         bintrayUser = props['bintray.user']
         bintrayApiKey = props['bintray.apikey']
     }
@@ -65,7 +64,7 @@ ext {
 
     publishedGroupId = 'eu.darken.ommvplib'
     libraryName = 'One More MVP Lib'
-    artifact = 'ommvplib'
+    artifact = 'library'
 
     libraryDescription = 'One More MVP Lib'
 
