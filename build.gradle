@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    ext {
+        minSdkVersion = 16
+        compileSdkVersion = 25
+        buildToolsVersion = '25.0.2'
+        targetSdkVersion = 25
+
+        supportVersion = '25.1.0'
+        daggerVersion = '2.6.1'
+        butterknifeVersion = '8.4.0'
+    }
+}
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

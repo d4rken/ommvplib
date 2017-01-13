@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">On More MVP Lib</string>
+
+    <string name="tab_counting_1">c1</string>
+    <string name="tab_counting_2">c2</string>
+    <string name="tab_shifting_1">s1</string>
+    <string name="tab_shifting_2">s2</string>
+
+    <string name="shift">shift!</string>
+    <string name="count">count!</string>
+</resources>
