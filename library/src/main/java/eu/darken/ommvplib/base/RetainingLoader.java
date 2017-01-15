@@ -1,19 +1,18 @@
-package eu.darken.ommvplib.core;
+package eu.darken.ommvplib.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 
 
-class ObjectRetainingLoader<TypeT> extends Loader<TypeT> {
+class RetainingLoader<TypeT> extends Loader<TypeT> {
 
-    private TypedObjectFactory<TypeT> typedObjectFactory;
-
+    private ObjectFactory<TypeT> objectFactory;
     private TypeT objectToRetain;
 
-    ObjectRetainingLoader(@NonNull Context context, @NonNull TypedObjectFactory<TypeT> typedObjectFactory) {
+    RetainingLoader(@NonNull Context context, @NonNull ObjectFactory<TypeT> objectFactory) {
         super(context);
-        this.typedObjectFactory = typedObjectFactory;
+        this.objectFactory = objectFactory;
     }
 
     @Override
@@ -35,10 +34,10 @@ class ObjectRetainingLoader<TypeT> extends Loader<TypeT> {
     }
 
     protected void createObjectToRetain() {
-        objectToRetain = typedObjectFactory.create();
+        objectToRetain = objectFactory.create();
     }
 
     protected void clearDataAfterCreation() {
-        typedObjectFactory = null;
+        objectFactory = null;
     }
 }

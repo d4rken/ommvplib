@@ -3,13 +3,12 @@ package eu.darken.ommvplib.injection;
 
 import android.support.annotation.Nullable;
 
-import eu.darken.ommvplib.BasePresenter;
-import eu.darken.ommvplib.BaseView;
+import eu.darken.ommvplib.Presenter;
 
 public abstract class ComponentPresenter<
-        ViewT extends BaseView,
-        ComponentT extends BaseComponent<ViewT, ? extends ComponentPresenter>>
-        implements BasePresenter<ViewT> {
+        ViewT extends Presenter.View,
+        ComponentT extends PresenterComponent<ViewT, ? extends ComponentPresenter>>
+        implements Presenter<ViewT> {
 
     ComponentT component;
     private ViewT view;

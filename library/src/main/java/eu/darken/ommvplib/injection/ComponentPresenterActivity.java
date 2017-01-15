@@ -2,20 +2,20 @@ package eu.darken.ommvplib.injection;
 
 import android.support.annotation.NonNull;
 
-import eu.darken.ommvplib.BaseView;
-import eu.darken.ommvplib.core.BasePresenterActivity;
-import eu.darken.ommvplib.core.PresenterLoader;
+import eu.darken.ommvplib.Presenter;
+import eu.darken.ommvplib.base.PresenterActivity;
+import eu.darken.ommvplib.base.PresenterFactory;
 
 public abstract class ComponentPresenterActivity<
-        ViewT extends BaseView,
+        ViewT extends Presenter.View,
         PresenterT extends ComponentPresenter<ViewT, ComponentT>,
-        ComponentT extends BaseComponent<ViewT, PresenterT>>
-        extends BasePresenterActivity<ViewT, PresenterT>
-        implements PresenterLoader.PresenterFactory<PresenterT> {
+        ComponentT extends PresenterComponent<ViewT, PresenterT>>
+        extends PresenterActivity<ViewT, PresenterT>
+        implements PresenterFactory<PresenterT> {
 
     @NonNull
     @Override
-    public PresenterLoader.PresenterFactory<PresenterT> getPresenterFactory() {
+    public PresenterFactory<PresenterT> getPresenterFactory() {
         return this;
     }
 

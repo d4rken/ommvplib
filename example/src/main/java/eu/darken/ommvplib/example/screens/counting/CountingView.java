@@ -1,8 +1,8 @@
 package eu.darken.ommvplib.example.screens.counting;
 
-import eu.darken.ommvplib.BaseView;
+import eu.darken.ommvplib.Presenter;
 
 
-public interface CountingView extends BaseView {
+public interface CountingView extends Presenter.View {
     void showText(String text);
 }

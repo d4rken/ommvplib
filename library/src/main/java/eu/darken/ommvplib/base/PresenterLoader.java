@@ -1,22 +1,18 @@
-package eu.darken.ommvplib.core;
+package eu.darken.ommvplib.base;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import eu.darken.ommvplib.BasePresenter;
-import eu.darken.ommvplib.BaseView;
+import eu.darken.ommvplib.Presenter;
 
 
-public class PresenterLoader<ViewT extends BaseView, PresenterT extends BasePresenter<ViewT>> extends ObjectRetainingLoader<PresenterT> {
+public class PresenterLoader<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> extends RetainingLoader<PresenterT> {
 
     private Bundle savedState;
 
-    public PresenterLoader(
-            @NonNull Context context,
-            @NonNull PresenterFactory<PresenterT> factory,
-            @Nullable Bundle savedState) {
+    public PresenterLoader(@NonNull Context context, @NonNull PresenterFactory<PresenterT> factory, @Nullable Bundle savedState) {
         super(context, factory);
         this.savedState = savedState;
     }
@@ -43,7 +39,4 @@ public class PresenterLoader<ViewT extends BaseView, PresenterT extends BasePres
         super.onReset();
     }
 
-    public interface PresenterFactory<PresenterT extends BasePresenter> extends TypedObjectFactory<PresenterT> {
-
-    }
 }

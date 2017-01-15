@@ -1,44 +1,41 @@
-package eu.darken.ommvplib.core;
+package eu.darken.ommvplib.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
-import eu.darken.ommvplib.BasePresenter;
-import eu.darken.ommvplib.BaseView;
+import eu.darken.ommvplib.Presenter;
 
-public abstract class BasePresenterFragment<
-        ViewT extends BaseView,
-        PresenterT extends BasePresenter<ViewT>>
+public abstract class PresenterFragment<
+        ViewT extends Presenter.View,
+        PresenterT extends Presenter<ViewT>>
         extends Fragment
         implements PresenterLoaderHelper.Callback<ViewT, PresenterT> {
 
     private static final int DEFAULT_LOADER_ID = 2017;
-
     protected PresenterT presenter;
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new PresenterLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), getLoaderId())
-                .fetchPresenter(getPresenterFactory(), savedInstanceState, new PresenterLoaderHelper.Callback<ViewT, PresenterT>() {
+        new PresenterLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), savedInstanceState)
+                .fetch(getPresenterFactory(), getLoaderId(), new PresenterLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
                     public void onPresenterReady(@NonNull PresenterT presenter) {
-                        BasePresenterFragment.this.presenter = presenter;
-                        BasePresenterFragment.this.onPresenterReady(presenter);
+                        PresenterFragment.this.presenter = presenter;
+                        PresenterFragment.this.onPresenterReady(presenter);
                     }
 
                     @Override
                     public void onPresenterDestroyed() {
-                        BasePresenterFragment.this.presenter = null;
-                        BasePresenterFragment.this.onPresenterDestroyed();
+                        PresenterFragment.this.presenter = null;
+                        PresenterFragment.this.onPresenterDestroyed();
                     }
                 });
     }
@@ -72,7 +69,7 @@ public abstract class BasePresenterFragment<
     public void onPresenterDestroyed() { }
 
     @NonNull
-    protected abstract PresenterLoader.PresenterFactory<PresenterT> getPresenterFactory();
+    protected abstract PresenterFactory<PresenterT> getPresenterFactory();
 
     public PresenterT getPresenter() {
         return presenter;
