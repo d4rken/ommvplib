@@ -1,6 +1,6 @@
 package eu.darken.ommvplib.injection;
 
-import eu.darken.ommvplib.mvp.BaseView;
+import eu.darken.ommvplib.BaseView;
 
 public interface BaseComponent<
         ViewT extends BaseView,

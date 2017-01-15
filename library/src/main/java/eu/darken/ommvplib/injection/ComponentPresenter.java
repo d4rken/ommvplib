@@ -3,19 +3,19 @@ package eu.darken.ommvplib.injection;
 
 import android.support.annotation.Nullable;
 
-import eu.darken.ommvplib.mvp.BasePresenter;
-import eu.darken.ommvplib.mvp.BaseView;
+import eu.darken.ommvplib.BasePresenter;
+import eu.darken.ommvplib.BaseView;
 
 public abstract class ComponentPresenter<
         ViewT extends BaseView,
-        ComponentT extends BaseComponent<ViewT, ?>>
+        ComponentT extends BaseComponent<ViewT, ? extends ComponentPresenter>>
         implements BasePresenter<ViewT> {
 
-    protected ComponentT component;
-    @Nullable private ViewT view;
+    ComponentT component;
+    private ViewT view;
 
     @Override
-    public void onBind(@Nullable ViewT view) {
+    public void onBindChange(@Nullable ViewT view) {
         this.view = view;
     }
 

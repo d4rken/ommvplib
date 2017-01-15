@@ -2,9 +2,9 @@ package eu.darken.ommvplib.injection;
 
 import android.support.annotation.NonNull;
 
-import eu.darken.ommvplib.mvp.BasePresenterActivity;
-import eu.darken.ommvplib.mvp.BaseView;
-import eu.darken.ommvplib.mvp.PresenterLoader;
+import eu.darken.ommvplib.BaseView;
+import eu.darken.ommvplib.core.BasePresenterActivity;
+import eu.darken.ommvplib.core.PresenterLoader;
 
 public abstract class ComponentPresenterActivity<
         ViewT extends BaseView,
