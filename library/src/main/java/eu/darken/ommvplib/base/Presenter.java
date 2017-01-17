@@ -1,4 +1,4 @@
-package eu.darken.ommvplib;
+package eu.darken.ommvplib.base;
 
 
 import android.os.Bundle;

@@ -2,7 +2,7 @@ package eu.darken.ommvplib.example.screens;
 
 import android.support.v4.app.LoaderManager;
 
-import eu.darken.ommvplib.Presenter;
+import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.injection.ComponentPresenter;
 import eu.darken.ommvplib.injection.ComponentPresenterFragment;
 import eu.darken.ommvplib.injection.PresenterComponent;

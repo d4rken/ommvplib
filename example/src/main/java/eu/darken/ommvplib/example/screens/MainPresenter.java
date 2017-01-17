@@ -6,19 +6,17 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-import eu.darken.ommvplib.example.ExampleApplication;
 import eu.darken.ommvplib.injection.ComponentPresenter;
 
 
 @MainScope
 public class MainPresenter extends ComponentPresenter<MainView, MainComponent> {
 
-    @Inject ExampleApplication application;
-
-    private int lastPagerItemPosition = 0;
+    private int lastPagerItemPosition;
 
     @Inject
-    MainPresenter() {
+    MainPresenter(int defaultStartPage) {
+        this.lastPagerItemPosition = defaultStartPage;
     }
 
     @Override

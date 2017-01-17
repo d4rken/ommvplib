@@ -1,19 +1,32 @@
 package eu.darken.ommvplib.example.screens;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import eu.darken.ommvplib.example.ExampleApplication;
 import eu.darken.ommvplib.example.R;
 import eu.darken.ommvplib.injection.ComponentPresenterActivity;
+import eu.darken.ommvplib.injection.fragment.FragmentComponent;
+import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilder;
+import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilderSource;
 
-import static eu.darken.ommvplib.example.InjectionHelper.getAppComponent;
 
+public class MainActivity extends ComponentPresenterActivity<MainView, MainPresenter, MainComponent>
+        implements MainView, FragmentComponentBuilderSource {
 
-public class MainActivity extends ComponentPresenterActivity<MainView, MainPresenter, MainComponent> implements MainView {
+    @Inject Map<Class<? extends Fragment>, Provider<FragmentComponentBuilder>> componentBuilders;
+    @Inject MainPagerAdapter adapter;
 
     @BindView(R.id.tabs) TabLayout tabLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -26,9 +39,7 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        final MainPagerAdapter sectionsPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -44,13 +55,22 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
     }
 
     @Override
-    public void inject(MainComponent component) {
-        component.inject(this);
+    protected MainComponent createComponent() {
+        MainComponent.Builder builder = ExampleApplication.get(this).getComponentBuilder(MainActivity.class);
+        builder.activityModule(new MainModule(this));
+        return builder.build();
     }
 
     @Override
-    protected MainComponent createComponent() {
-        return getAppComponent(this).mainComponent(new MainModule());
+    public void inject(@NonNull MainComponent component) {
+        super.inject(component);
+        component.injectMembers(this);
+    }
+
+    @Override
+    public void onPresenterReady(@NonNull MainPresenter presenter) {
+        super.onPresenterReady(presenter);
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -58,4 +78,9 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
         return MainPresenter.class;
     }
 
+    @Override
+    public <A extends Fragment, B extends FragmentComponentBuilder<A, ? extends FragmentComponent<A>>> B getComponentBuilder(Class<A> fragmentClass) {
+        //noinspection unchecked
+        return (B) componentBuilders.get(fragmentClass).get();
+    }
 }

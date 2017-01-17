@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import eu.darken.ommvplib.Presenter;
-
 
 public class PresenterLoaderHelper<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> {
 

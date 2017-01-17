@@ -2,7 +2,7 @@ package eu.darken.ommvplib.injection;
 
 import android.support.annotation.NonNull;
 
-import eu.darken.ommvplib.Presenter;
+import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.base.PresenterActivity;
 import eu.darken.ommvplib.base.PresenterFactory;
 
@@ -34,7 +34,9 @@ public abstract class ComponentPresenterActivity<
         inject(presenter.component);
     }
 
-    public abstract void inject(ComponentT component);
+    public void inject(@NonNull ComponentT component) {
+
+    }
 
     protected abstract ComponentT createComponent();
 

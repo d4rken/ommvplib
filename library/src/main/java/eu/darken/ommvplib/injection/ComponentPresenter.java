@@ -3,7 +3,7 @@ package eu.darken.ommvplib.injection;
 
 import android.support.annotation.Nullable;
 
-import eu.darken.ommvplib.Presenter;
+import eu.darken.ommvplib.base.Presenter;
 
 public abstract class ComponentPresenter<
         ViewT extends Presenter.View,

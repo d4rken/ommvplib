@@ -20,10 +20,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    testCompile 'junit:junit:4.12'
+
     compile "com.android.support:design:${supportVersion}"
 
     compile "com.google.dagger:dagger:${daggerVersion}"
@@ -33,6 +38,21 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 
     compile 'com.jakewharton.timber:timber:4.5.0'
+
+    androidTestCompile 'org.mockito:mockito-core:2.6.3'
+
+    // Android runner and rules support
+    androidTestCompile('com.android.support.test:runner:0.5', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile('com.android.support.test:rules:0.5', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // Espresso support
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 
     compile project(':library')
 }

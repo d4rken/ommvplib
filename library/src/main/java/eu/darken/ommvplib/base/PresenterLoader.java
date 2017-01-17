@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import eu.darken.ommvplib.Presenter;
-
 
 public class PresenterLoader<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> extends RetainingLoader<PresenterT> {
 

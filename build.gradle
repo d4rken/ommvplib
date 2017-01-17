@@ -17,16 +17,17 @@ allprojects {
     repositories {
         jcenter()
     }
-    ext {
-        minSdkVersion = 16
-        compileSdkVersion = 25
-        buildToolsVersion = '25.0.2'
-        targetSdkVersion = 25
+}
 
-        supportVersion = '25.1.0'
-        daggerVersion = '2.6.1'
-        butterknifeVersion = '8.4.0'
-    }
+ext {
+    minSdkVersion = 16
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.2'
+    targetSdkVersion = 25
+
+    supportVersion = '25.1.0'
+    daggerVersion = '2.8'
+    butterknifeVersion = '8.4.0'
 }
 
 

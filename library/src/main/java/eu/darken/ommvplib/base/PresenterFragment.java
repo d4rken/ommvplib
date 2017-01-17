@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import eu.darken.ommvplib.Presenter;
-
 public abstract class PresenterFragment<
         ViewT extends Presenter.View,
         PresenterT extends Presenter<ViewT>>
@@ -58,7 +56,8 @@ public abstract class PresenterFragment<
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        presenter.onSaveInstanceState(outState);
+        // may be called for detached Fragments.
+        if (presenter != null) presenter.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
 

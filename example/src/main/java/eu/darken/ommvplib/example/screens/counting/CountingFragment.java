@@ -12,8 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eu.darken.ommvplib.example.R;
 import eu.darken.ommvplib.example.screens.BasePagerFragment;
-
-import static eu.darken.ommvplib.example.InjectionHelper.getAppComponent;
+import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilderSource;
 
 public class CountingFragment extends BasePagerFragment<CountingView, CountingPresenter, CountingComponent> implements CountingView {
 
@@ -37,13 +36,10 @@ public class CountingFragment extends BasePagerFragment<CountingView, CountingPr
     }
 
     @Override
-    public void inject(CountingComponent component) {
-        component.inject(this); // no-op for this fragment
-    }
-
-    @Override
     public CountingComponent createComponent() {
-        return getAppComponent(this).countingComponent();
+        CountingComponent.Builder builder = ((FragmentComponentBuilderSource) getActivity()).getComponentBuilder(CountingFragment.class);
+        builder.module(new CountingModule());
+        return builder.build();
     }
 
     @Override
