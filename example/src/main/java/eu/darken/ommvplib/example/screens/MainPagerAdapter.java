@@ -1,41 +1,33 @@
 package eu.darken.ommvplib.example.screens;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import eu.darken.ommvplib.example.screens.counting.CountingFragment;
+import java.util.List;
 
 class MainPagerAdapter extends FragmentPagerAdapter {
 
-    private enum TabItem {
-        COUNTING1(CountingFragment.class, "Tab 1"),
-        COUNTING2(CountingFragment.class, "Tab 2"),
-        COUNTING3(CountingFragment.class, "Tab 3"),
-        COUNTING4(CountingFragment.class, "Tab 4"),
-        COUNTING5(CountingFragment.class, "Tab 5");
+    private final List<FragmentObj> fragments;
 
-        private final Class<? extends BasePagerFragment<?, ?, ?>> fragmentClass;
-        private final String title;
+    static class FragmentObj {
+        final Class<? extends Fragment> fragmentClass;
+        final String title;
 
-        TabItem(Class<? extends BasePagerFragment<?, ?, ?>> fragmentClass, String title) {
+        FragmentObj(Class<? extends Fragment> fragmentClass, String title) {
             this.fragmentClass = fragmentClass;
             this.title = title;
         }
     }
 
-    private final TabItem[] tabItems = TabItem.values();
-    private final Context context;
-
-    MainPagerAdapter(FragmentManager fragmentManager, Context context) {
+    MainPagerAdapter(FragmentManager fragmentManager, List<FragmentObj> fragments) {
         super(fragmentManager);
-        this.context = context;
+        this.fragments = fragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return newInstance(tabItems[position].fragmentClass);
+        return newInstance(fragments.get(position).fragmentClass);
     }
 
     private Fragment newInstance(Class<? extends Fragment> fragmentClass) {
@@ -48,12 +40,12 @@ class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabItems[position].title;
+        return fragments.get(position).title;
     }
 
     @Override
     public int getCount() {
-        return tabItems.length;
+        return fragments.size();
     }
 
 }
