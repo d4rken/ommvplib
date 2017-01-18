@@ -2,10 +2,11 @@ apply plugin: 'com.android.library'
 
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 4
+def versionPatch = 5
 def myVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
 def myVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
+//noinspection GroovyMissingReturnStatement
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
