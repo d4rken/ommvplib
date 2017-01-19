@@ -30,6 +30,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile "com.android.support:design:${supportVersion}"
+    compile "com.android.support:preference-v14:${supportVersion}"
 
     compile "com.google.dagger:dagger:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"

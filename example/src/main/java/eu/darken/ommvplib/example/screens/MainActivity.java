@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -26,7 +27,7 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
         implements MainView, FragmentComponentBuilderSource {
 
     @Inject Map<Class<? extends Fragment>, Provider<FragmentComponentBuilder>> componentBuilders;
-    @Inject MainPagerAdapter adapter;
+    @Inject List<MainPagerAdapter.FragmentObj> fragments;
 
     @BindView(R.id.tabs) TabLayout tabLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -68,9 +69,9 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
     }
 
     @Override
-    public void onPresenterReady(@NonNull MainPresenter presenter) {
-        super.onPresenterReady(presenter);
-        viewPager.setAdapter(adapter);
+    public void onResume() {
+        super.onResume();
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
     }
 
     @Override
