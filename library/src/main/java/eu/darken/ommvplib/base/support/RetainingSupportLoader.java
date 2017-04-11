@@ -1,16 +1,18 @@
-package eu.darken.ommvplib.base;
+package eu.darken.ommvplib.base.support;
 
 import android.content.Context;
-import android.content.Loader;
 import android.support.annotation.NonNull;
+import android.support.v4.content.Loader;
+
+import eu.darken.ommvplib.base.ObjectFactory;
 
 
-class RetainingLoader<TypeT> extends Loader<TypeT> {
+class RetainingSupportLoader<TypeT> extends Loader<TypeT> {
 
     private ObjectFactory<TypeT> objectFactory;
     private TypeT objectToRetain;
 
-    RetainingLoader(@NonNull Context context, @NonNull ObjectFactory<TypeT> objectFactory) {
+    RetainingSupportLoader(@NonNull Context context, @NonNull ObjectFactory<TypeT> objectFactory) {
         super(context);
         this.objectFactory = objectFactory;
     }

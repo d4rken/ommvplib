@@ -1,9 +1,9 @@
 package eu.darken.ommvplib.base;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 public abstract class PresenterFragment<
         ViewT extends Presenter.View,
@@ -22,7 +22,7 @@ public abstract class PresenterFragment<
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new PresenterLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), savedInstanceState)
+        new PresenterLoaderHelper<ViewT, PresenterT>(getActivity(), getLoaderManager(), savedInstanceState)
                 .fetch(getPresenterFactory(), getLoaderId(), new PresenterLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
                     public void onPresenterReady(@NonNull PresenterT presenter) {
@@ -62,7 +62,9 @@ public abstract class PresenterFragment<
     }
 
     @Override
-    public void onPresenterReady(@NonNull PresenterT presenter) { }
+    public void onPresenterReady(@NonNull PresenterT presenter) {
+        this.presenter = presenter;
+    }
 
     @Override
     public void onPresenterDestroyed() { }

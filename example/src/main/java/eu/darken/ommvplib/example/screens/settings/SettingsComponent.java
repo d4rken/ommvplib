@@ -2,13 +2,12 @@ package eu.darken.ommvplib.example.screens.settings;
 
 import dagger.Subcomponent;
 import eu.darken.ommvplib.injection.PresenterComponent;
-import eu.darken.ommvplib.injection.fragment.FragmentComponent;
-import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilder;
+import eu.darken.ommvplib.injection.fragment.support.SupportFragmentComponent;
 
 @Subcomponent
-public interface SettingsComponent extends FragmentComponent<SettingsFragment>, PresenterComponent<SettingsPresenter.View, SettingsPresenter> {
+public interface SettingsComponent extends SupportFragmentComponent<SettingsFragment>, PresenterComponent<SettingsPresenter.View, SettingsPresenter> {
     @Subcomponent.Builder
-    interface Builder extends FragmentComponentBuilder<SettingsFragment, SettingsComponent> {
+    abstract class Builder extends SupportFragmentComponent.Builder<SettingsFragment, SettingsComponent> {
 
     }
 }

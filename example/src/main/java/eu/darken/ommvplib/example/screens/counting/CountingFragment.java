@@ -10,6 +10,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eu.darken.ommvplib.example.ExampleApplication;
 import eu.darken.ommvplib.example.R;
 import eu.darken.ommvplib.example.screens.BasePagerFragment;
 
@@ -35,14 +36,13 @@ public class CountingFragment extends BasePagerFragment<CountingView, CountingPr
     }
 
     @Override
-    public CountingComponent createComponent() {
-        CountingComponent.Builder builder = getComponentBuilder(this);
-        builder.module(new CountingModule());
-        return builder.build();
+    public Class<? extends CountingPresenter> getTypeClazz() {
+        return CountingPresenter.class;
     }
 
     @Override
-    public Class<? extends CountingPresenter> getTypeClazz() {
-        return CountingPresenter.class;
+    public void onDestroy() {
+        super.onDestroy();
+        ExampleApplication.getRefWatcher(getContext()).watch(this);
     }
 }

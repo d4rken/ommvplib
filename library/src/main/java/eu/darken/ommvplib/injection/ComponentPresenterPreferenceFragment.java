@@ -1,14 +1,11 @@
 package eu.darken.ommvplib.injection;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
 import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.base.PresenterFactory;
 import eu.darken.ommvplib.base.PresenterPreferenceFragment;
-import eu.darken.ommvplib.injection.fragment.FragmentComponent;
-import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilder;
-import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilderSource;
+import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInjector;
 
 public abstract class ComponentPresenterPreferenceFragment<
         ViewT extends Presenter.View,
@@ -25,7 +22,9 @@ public abstract class ComponentPresenterPreferenceFragment<
 
     @Override
     public PresenterT create() {
-        final ComponentT component = createComponent();
+        HasManualSupportFragmentInjector injectorSource = (HasManualSupportFragmentInjector) getActivity();
+        //noinspection unchecked
+        final ComponentT component = (ComponentT) injectorSource.supportFragmentInjector().get(this);
         final PresenterT presenter = component.getPresenter();
         presenter.component = component;
         return presenter;
@@ -35,19 +34,10 @@ public abstract class ComponentPresenterPreferenceFragment<
     public void onPresenterReady(@NonNull PresenterT presenter) {
         super.onPresenterReady(presenter);
         this.presenter = presenter;
-        inject(presenter.component);
+        onComponentAvailable(presenter.component);
     }
 
-    public void inject(@NonNull ComponentT component) {
-    }
+    public void onComponentAvailable(ComponentT component) {
 
-    public abstract ComponentT createComponent();
-
-    public static <A extends Fragment, B extends FragmentComponentBuilder<A, ? extends FragmentComponent<A>>> B getComponentBuilder(A fragment) {
-        final FragmentComponentBuilderSource source = (FragmentComponentBuilderSource) fragment.getActivity();
-        //noinspection unchecked
-        final FragmentComponentBuilder<A, ? extends FragmentComponent<A>> builder = source.getComponentBuilder((Class<A>) fragment.getClass());
-        //noinspection unchecked
-        return (B) builder;
     }
 }

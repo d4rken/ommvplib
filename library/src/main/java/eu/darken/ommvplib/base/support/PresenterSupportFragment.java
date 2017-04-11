@@ -1,39 +1,48 @@
-package eu.darken.ommvplib.base;
+package eu.darken.ommvplib.base.support;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 
-import eu.darken.ommvplib.base.support.PresenterSupportLoaderHelper;
+import eu.darken.ommvplib.base.Presenter;
+import eu.darken.ommvplib.base.PresenterFactory;
 
-
-public abstract class PresenterActivity<
+public abstract class PresenterSupportFragment<
         ViewT extends Presenter.View,
         PresenterT extends Presenter<ViewT>>
-        extends AppCompatActivity
+        extends Fragment
         implements PresenterSupportLoaderHelper.Callback<ViewT, PresenterT> {
 
     private static final int DEFAULT_LOADER_ID = 2017;
     protected PresenterT presenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        new PresenterSupportLoaderHelper<ViewT, PresenterT>(this, getSupportLoaderManager(), savedInstanceState)
+    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new PresenterSupportLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), savedInstanceState)
                 .fetch(getPresenterFactory(), getLoaderId(), new PresenterSupportLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
                     public void onPresenterReady(@NonNull PresenterT presenter) {
-                        PresenterActivity.this.presenter = presenter;
-                        PresenterActivity.this.onPresenterReady(presenter);
+                        PresenterSupportFragment.this.presenter = presenter;
+                        PresenterSupportFragment.this.onPresenterReady(presenter);
                     }
 
                     @Override
                     public void onPresenterDestroyed() {
-                        PresenterActivity.this.presenter = null;
-                        PresenterActivity.this.onPresenterDestroyed();
+                        PresenterSupportFragment.this.presenter = null;
+                        PresenterSupportFragment.this.onPresenterDestroyed();
                     }
                 });
+    }
+
+    public int getLoaderId() {
+        return DEFAULT_LOADER_ID;
     }
 
     @Override
@@ -50,16 +59,15 @@ public abstract class PresenterActivity<
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        presenter.onSaveInstanceState(outState);
+        // may be called for detached Fragments.
+        if (presenter != null) presenter.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
 
-    public int getLoaderId() {
-        return DEFAULT_LOADER_ID;
-    }
-
     @Override
-    public void onPresenterReady(@NonNull PresenterT presenter) { }
+    public void onPresenterReady(@NonNull PresenterT presenter) {
+        this.presenter = presenter;
+    }
 
     @Override
     public void onPresenterDestroyed() { }

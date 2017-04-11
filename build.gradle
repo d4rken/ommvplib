@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
@@ -16,6 +16,12 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -25,8 +31,8 @@ ext {
     buildToolsVersion = '25.0.2'
     targetSdkVersion = 25
 
-    supportVersion = '25.1.0'
-    daggerVersion = '2.8'
+    supportVersion = '25.3.1'
+    daggerVersion = '2.10'
     butterknifeVersion = '8.4.0'
 }
 

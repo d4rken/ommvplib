@@ -1,33 +1,30 @@
 package eu.darken.ommvplib.example.screens;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.darken.ommvplib.example.ExampleApplication;
 import eu.darken.ommvplib.example.R;
 import eu.darken.ommvplib.injection.ComponentPresenterActivity;
-import eu.darken.ommvplib.injection.fragment.FragmentComponent;
-import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilder;
-import eu.darken.ommvplib.injection.fragment.FragmentComponentBuilderSource;
+import eu.darken.ommvplib.injection.ComponentSource;
+import eu.darken.ommvplib.injection.ManualInjector;
+import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInjector;
 
 
 public class MainActivity extends ComponentPresenterActivity<MainView, MainPresenter, MainComponent>
-        implements MainView, FragmentComponentBuilderSource {
+        implements MainView, HasManualSupportFragmentInjector {
 
-    @Inject Map<Class<? extends Fragment>, Provider<FragmentComponentBuilder>> componentBuilders;
-    @Inject List<MainPagerAdapter.FragmentObj> fragments;
+    @MainScope
+    @Inject
+    ComponentSource<Fragment> componentSource;
 
     @BindView(R.id.tabs) TabLayout tabLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -56,22 +53,13 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
     }
 
     @Override
-    protected MainComponent createComponent() {
-        MainComponent.Builder builder = ExampleApplication.get(this).getComponentBuilder(MainActivity.class);
-        builder.activityModule(new MainModule(this));
-        return builder.build();
+    public void onComponentAvailable(MainComponent component) {
+        component.inject(this);
     }
 
     @Override
-    public void inject(@NonNull MainComponent component) {
-        super.inject(component);
-        component.injectMembers(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
+    public void showFragments(List<MainPagerAdapter.FragmentObj> fragmentbjects) {
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragmentbjects));
     }
 
     @Override
@@ -80,8 +68,7 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
     }
 
     @Override
-    public <A extends Fragment, B extends FragmentComponentBuilder<A, ? extends FragmentComponent<A>>> B getComponentBuilder(Class<A> fragmentClass) {
-        //noinspection unchecked
-        return (B) componentBuilders.get(fragmentClass).get();
+    public ManualInjector<Fragment> supportFragmentInjector() {
+        return componentSource;
     }
 }

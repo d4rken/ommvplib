@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import eu.darken.ommvplib.injection.ComponentPresenter;
@@ -11,11 +13,12 @@ import eu.darken.ommvplib.injection.ComponentPresenter;
 
 @MainScope
 public class MainPresenter extends ComponentPresenter<MainView, MainComponent> {
-
+    private final List<MainPagerAdapter.FragmentObj> fragmentObjs;
     private int lastPagerItemPosition;
 
     @Inject
-    MainPresenter(int defaultStartPage) {
+    MainPresenter(List<MainPagerAdapter.FragmentObj> fragmentObjs, int defaultStartPage) {
+        this.fragmentObjs = fragmentObjs;
         this.lastPagerItemPosition = defaultStartPage;
     }
 
@@ -26,6 +29,7 @@ public class MainPresenter extends ComponentPresenter<MainView, MainComponent> {
 
     @Override
     public void onBindChange(@Nullable MainView view) {
+        if (view != null) view.showFragments(fragmentObjs);
         if (view != null) view.showPagerItem(lastPagerItemPosition);
     }
 

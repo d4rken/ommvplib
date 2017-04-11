@@ -1,20 +1,23 @@
-package eu.darken.ommvplib.base;
+package eu.darken.ommvplib.base.support;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+
+import eu.darken.ommvplib.base.Presenter;
+import eu.darken.ommvplib.base.PresenterFactory;
 
 
-public class PresenterLoaderHelper<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> {
+public class PresenterSupportLoaderHelper<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> {
 
     private final LoaderManager loaderManager;
     @Nullable private final Bundle savedState;
     final Context context;
 
-    public PresenterLoaderHelper(@NonNull Context context, @NonNull LoaderManager manager, @Nullable Bundle savedState) {
+    public PresenterSupportLoaderHelper(@NonNull Context context, @NonNull LoaderManager manager, @Nullable Bundle savedState) {
         this.context = context;
         this.loaderManager = manager;
         this.savedState = savedState;
@@ -22,8 +25,8 @@ public class PresenterLoaderHelper<ViewT extends Presenter.View, PresenterT exte
 
     public void fetch(@NonNull final PresenterFactory<PresenterT> factory, int loaderId, @NonNull final Callback<ViewT, PresenterT> callback) {
         Loader<PresenterT> loader = loaderManager.getLoader(loaderId);
-        if (loader instanceof PresenterLoader) {
-            PresenterLoader presenterLoader = (PresenterLoader) loader;
+        if (loader instanceof PresenterSupportLoader) {
+            PresenterSupportLoader presenterLoader = (PresenterSupportLoader) loader;
             Class<? extends PresenterT> presenterClazz = factory.getTypeClazz();
             Object _presenter = presenterLoader.getPresenter();
             if (presenterClazz.isInstance(_presenter)) callback.onPresenterReady(presenterClazz.cast(_presenter));
@@ -32,7 +35,7 @@ public class PresenterLoaderHelper<ViewT extends Presenter.View, PresenterT exte
             loaderManager.initLoader(loaderId, savedState, new LoaderManager.LoaderCallbacks<PresenterT>() {
                 @Override
                 public Loader<PresenterT> onCreateLoader(int id, Bundle args) {
-                    return new PresenterLoader<>(context, factory, args);
+                    return new PresenterSupportLoader<>(context, factory, args);
                 }
 
                 @Override

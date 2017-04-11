@@ -7,11 +7,6 @@ import eu.darken.ommvplib.injection.ComponentPresenterPreferenceFragment;
 
 public class SettingsFragment extends ComponentPresenterPreferenceFragment<SettingsPresenter.View, SettingsPresenter, SettingsComponent>
         implements SettingsPresenter.View {
-    @Override
-    public SettingsComponent createComponent() {
-        SettingsComponent.Builder builder = getComponentBuilder(this);
-        return builder.build();
-    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

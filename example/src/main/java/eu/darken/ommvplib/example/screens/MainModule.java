@@ -10,17 +10,6 @@ import eu.darken.ommvplib.example.screens.debug.DebugFragment;
 
 @Module
 public class MainModule {
-    private final MainActivity activity;
-
-    MainModule(MainActivity activity) {
-        this.activity = activity;
-    }
-
-    @Provides
-    @MainScope
-    MainActivity provideActivity() {
-        return activity;
-    }
 
     @Provides
     @MainScope

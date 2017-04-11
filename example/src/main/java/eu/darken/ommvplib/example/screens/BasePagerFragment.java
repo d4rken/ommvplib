@@ -4,14 +4,14 @@ import android.support.v4.app.LoaderManager;
 
 import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.injection.ComponentPresenter;
-import eu.darken.ommvplib.injection.ComponentPresenterFragment;
+import eu.darken.ommvplib.injection.ComponentPresenterSupportFragment;
 import eu.darken.ommvplib.injection.PresenterComponent;
 
 public abstract class BasePagerFragment<
         ViewT extends Presenter.View,
         PresenterT extends ComponentPresenter<ViewT, ComponentT>,
         ComponentT extends PresenterComponent<ViewT, PresenterT>>
-        extends ComponentPresenterFragment<ViewT, PresenterT, ComponentT> {
+        extends ComponentPresenterSupportFragment<ViewT, PresenterT, ComponentT> {
 
     @Override
     public LoaderManager getLoaderManager() {

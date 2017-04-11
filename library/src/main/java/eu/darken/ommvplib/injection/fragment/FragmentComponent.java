@@ -1,8 +1,19 @@
 package eu.darken.ommvplib.injection.fragment;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.support.annotation.Nullable;
 
-import dagger.MembersInjector;
+import dagger.android.AndroidInjector;
 
-public interface FragmentComponent<FragmentT extends Fragment> extends MembersInjector<FragmentT> {
+public interface FragmentComponent<FragmentT extends Fragment> extends AndroidInjector<FragmentT> {
+
+    abstract class Builder<FragmentT extends Fragment, ComponentT extends FragmentComponent<FragmentT>>
+            extends AndroidInjector.Builder<FragmentT> {
+        public abstract ComponentT build();
+
+        @Override
+        public void seedInstance(@Nullable FragmentT instance) {
+
+        }
+    }
 }

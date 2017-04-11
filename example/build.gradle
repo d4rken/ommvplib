@@ -10,30 +10,50 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "eu.darken.ommvplib.example.ExampleTestRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 }
+// Needed until this is fixed:
+// https://code.google.com/p/android/issues/detail?id=224272
+android.applicationVariants.all {
+    def aptOutputDir = new File(buildDir, "generated/source/apt/${it.unitTestVariant.dirName}")
+    it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
+}
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':library')
 
     testCompile 'junit:junit:4.12'
 
     compile "com.android.support:design:${supportVersion}"
     compile "com.android.support:preference-v14:${supportVersion}"
 
-    compile "com.google.dagger:dagger:${daggerVersion}"
+//    compile "com.google.dagger:dagger:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+
+//    compile "com.google.dagger:dagger-android:${daggerVersion}"
+    compile(name: 'dagger-android', ext: 'aar')
+//    compile"com.google.dagger:dagger-android-support:${daggerVersion}"
+    compile(name: 'dagger-android-support', ext: 'aar')
+
+    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
 
     compile "com.jakewharton:butterknife:${butterknifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
@@ -42,6 +62,12 @@ dependencies {
 
     androidTestCompile 'org.mockito:mockito-core:2.6.3'
     androidTestCompile 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
+
+    androidTestCompile "com.google.code.findbugs:jsr305:3.0.1"
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
     // Android runner and rules support
     androidTestCompile('com.android.support.test:runner:0.5', {
@@ -55,6 +81,4 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    compile project(':library')
 }

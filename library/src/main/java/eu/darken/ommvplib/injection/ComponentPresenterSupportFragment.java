@@ -4,14 +4,14 @@ import android.support.annotation.NonNull;
 
 import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.base.PresenterFactory;
-import eu.darken.ommvplib.base.PresenterFragment;
-import eu.darken.ommvplib.injection.fragment.HasManualFragmentInjector;
+import eu.darken.ommvplib.base.support.PresenterSupportFragment;
+import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInjector;
 
-public abstract class ComponentPresenterFragment<
+public abstract class ComponentPresenterSupportFragment<
         ViewT extends Presenter.View,
         PresenterT extends ComponentPresenter<ViewT, ComponentT>,
         ComponentT extends PresenterComponent<ViewT, PresenterT>>
-        extends PresenterFragment<ViewT, PresenterT>
+        extends PresenterSupportFragment<ViewT, PresenterT>
         implements PresenterFactory<PresenterT> {
 
     @NonNull
@@ -22,9 +22,9 @@ public abstract class ComponentPresenterFragment<
 
     @Override
     public PresenterT create() {
-        HasManualFragmentInjector injectorSource = (HasManualFragmentInjector) getActivity();
+        HasManualSupportFragmentInjector injectorSource = (HasManualSupportFragmentInjector) getActivity();
         //noinspection unchecked
-        final ComponentT component = (ComponentT) injectorSource.fragmentInjector().get(this);
+        final ComponentT component = (ComponentT) injectorSource.supportFragmentInjector().get(this);
         final PresenterT presenter = component.getPresenter();
         presenter.component = component;
         return presenter;

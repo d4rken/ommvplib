@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import eu.darken.ommvplib.base.support.PresenterSupportLoaderHelper;
+
 public abstract class PresenterPreferenceFragment<
         ViewT extends Presenter.View,
         PresenterT extends Presenter<ViewT>>
         extends PreferenceFragmentCompat
-        implements PresenterLoaderHelper.Callback<ViewT, PresenterT> {
+        implements PresenterSupportLoaderHelper.Callback<ViewT, PresenterT> {
 
     private static final int DEFAULT_LOADER_ID = 2017;
     protected PresenterT presenter;
@@ -22,8 +24,8 @@ public abstract class PresenterPreferenceFragment<
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new PresenterLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), savedInstanceState)
-                .fetch(getPresenterFactory(), getLoaderId(), new PresenterLoaderHelper.Callback<ViewT, PresenterT>() {
+        new PresenterSupportLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), savedInstanceState)
+                .fetch(getPresenterFactory(), getLoaderId(), new PresenterSupportLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
                     public void onPresenterReady(@NonNull PresenterT presenter) {
                         PresenterPreferenceFragment.this.presenter = presenter;

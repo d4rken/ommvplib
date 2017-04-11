@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 6
+def versionPatch = 7
 def myVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
 def myVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -18,7 +18,6 @@ android {
         versionName myVersionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -27,14 +26,24 @@ android {
         }
     }
 }
+// Needed until this is fixed:
+// https://code.google.com/p/android/issues/detail?id=224272
+android.libraryVariants.all {
+    def aptOutputDir = new File(buildDir, "generated/source/apt/${it.unitTestVariant.dirName}")
+    it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
+}
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:support-annotations:${supportVersion}"
     compile "com.android.support:appcompat-v7:${supportVersion}"
     compile "com.android.support:preference-v7:${supportVersion}"
 
     compile "com.google.dagger:dagger:${daggerVersion}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+//    compile "com.google.dagger:dagger-android:${daggerVersion}"
+    compile(name: 'dagger-android', ext: 'aar')
+//    compile"com.google.dagger:dagger-android-support:${daggerVersion}"
+    compile(name: 'dagger-android-support', ext: 'aar')
+//    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+//    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
 }
 
 def credentialsFile = new File(System.properties['user.home'], ".bintray/bintray.properties")

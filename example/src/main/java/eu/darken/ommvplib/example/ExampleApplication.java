@@ -4,43 +4,40 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-import java.util.Map;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
-import eu.darken.ommvplib.injection.activity.ActivityComponent;
-import eu.darken.ommvplib.injection.activity.ActivityComponentBuilder;
-import eu.darken.ommvplib.injection.activity.ActivityComponentBuilderSource;
+import eu.darken.ommvplib.injection.ManualInjector;
+import eu.darken.ommvplib.injection.activity.HasManualActivityInjector;
 import timber.log.Timber;
 
 
-public class ExampleApplication extends Application implements ActivityComponentBuilderSource {
+public class ExampleApplication extends Application implements HasManualActivityInjector {
 
-    @Inject AppComponent appComponent;
-    @Inject Map<Class<? extends Activity>, Provider<ActivityComponentBuilder>> componentBuilders;
+    AppComponent appComponent;
+    ManualInjector<Activity> manualInjector;
+    RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) return;
+        refWatcher = LeakCanary.install(this);
+
         Timber.plant(new Timber.DebugTree());
-        DaggerAppComponent.builder()
+        appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .build()
-                .inject(this);
+                .build();
+        manualInjector = appComponent.activityComponentSource();
     }
 
-    public AppComponent getAppComponent() {
-        return appComponent;
+    public static RefWatcher getRefWatcher(Context context) {
+        ExampleApplication application = (ExampleApplication) context.getApplicationContext();
+        return application.refWatcher;
     }
 
     @Override
-    public <A extends Activity, B extends ActivityComponentBuilder<A, ? extends ActivityComponent<A>>> B getComponentBuilder(Class<A> activityKey) {
-        //noinspection unchecked
-        return (B) componentBuilders.get(activityKey).get();
-    }
-
-    public static ActivityComponentBuilderSource get(Context context) {
-        return ((ActivityComponentBuilderSource) context.getApplicationContext());
+    public ManualInjector<Activity> activityInjector() {
+        return manualInjector;
     }
 }

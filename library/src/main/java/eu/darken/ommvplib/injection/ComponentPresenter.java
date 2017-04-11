@@ -10,7 +10,7 @@ public abstract class ComponentPresenter<
         ComponentT extends PresenterComponent<ViewT, ? extends ComponentPresenter>>
         implements Presenter<ViewT> {
 
-    ComponentT component;
+    protected ComponentT component;
     private ViewT view;
 
     @Override
