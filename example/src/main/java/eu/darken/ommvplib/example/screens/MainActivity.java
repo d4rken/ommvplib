@@ -22,9 +22,7 @@ import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInj
 public class MainActivity extends ComponentPresenterActivity<MainView, MainPresenter, MainComponent>
         implements MainView, HasManualSupportFragmentInjector {
 
-    @MainScope
-    @Inject
-    ComponentSource<Fragment> componentSource;
+    @Inject ComponentSource<Fragment> componentSource;
 
     @BindView(R.id.tabs) TabLayout tabLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -50,11 +48,6 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
     @Override
     public void showPagerItem(int position) {
         viewPager.setCurrentItem(position, false);
-    }
-
-    @Override
-    public void onComponentAvailable(MainComponent component) {
-        component.inject(this);
     }
 
     @Override

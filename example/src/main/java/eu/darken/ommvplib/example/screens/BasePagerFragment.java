@@ -6,11 +6,12 @@ import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.injection.ComponentPresenter;
 import eu.darken.ommvplib.injection.ComponentPresenterSupportFragment;
 import eu.darken.ommvplib.injection.PresenterComponent;
+import eu.darken.ommvplib.injection.fragment.support.SupportFragmentComponent;
 
 public abstract class BasePagerFragment<
         ViewT extends Presenter.View,
         PresenterT extends ComponentPresenter<ViewT, ComponentT>,
-        ComponentT extends PresenterComponent<ViewT, PresenterT>>
+        ComponentT extends SupportFragmentComponent & PresenterComponent<ViewT, PresenterT>>
         extends ComponentPresenterSupportFragment<ViewT, PresenterT, ComponentT> {
 
     @Override

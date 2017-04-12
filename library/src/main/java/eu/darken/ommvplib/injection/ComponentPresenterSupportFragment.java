@@ -6,11 +6,12 @@ import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.base.PresenterFactory;
 import eu.darken.ommvplib.base.support.PresenterSupportFragment;
 import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInjector;
+import eu.darken.ommvplib.injection.fragment.support.SupportFragmentComponent;
 
 public abstract class ComponentPresenterSupportFragment<
         ViewT extends Presenter.View,
         PresenterT extends ComponentPresenter<ViewT, ComponentT>,
-        ComponentT extends PresenterComponent<ViewT, PresenterT>>
+        ComponentT extends SupportFragmentComponent & PresenterComponent<ViewT, PresenterT>>
         extends PresenterSupportFragment<ViewT, PresenterT>
         implements PresenterFactory<PresenterT> {
 
@@ -38,6 +39,7 @@ public abstract class ComponentPresenterSupportFragment<
     }
 
     public void onComponentAvailable(ComponentT component) {
-
+        //noinspection unchecked
+        component.inject(this);
     }
 }

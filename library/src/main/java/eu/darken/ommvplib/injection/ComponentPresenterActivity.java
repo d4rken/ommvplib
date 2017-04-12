@@ -5,12 +5,13 @@ import android.support.annotation.NonNull;
 import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.base.PresenterActivity;
 import eu.darken.ommvplib.base.PresenterFactory;
+import eu.darken.ommvplib.injection.activity.ActivityComponent;
 import eu.darken.ommvplib.injection.activity.HasManualActivityInjector;
 
 public abstract class ComponentPresenterActivity<
         ViewT extends Presenter.View,
         PresenterT extends ComponentPresenter<ViewT, ComponentT>,
-        ComponentT extends PresenterComponent<ViewT, PresenterT>>
+        ComponentT extends ActivityComponent & PresenterComponent<ViewT, PresenterT>>
         extends PresenterActivity<ViewT, PresenterT>
         implements PresenterFactory<PresenterT> {
 
@@ -38,6 +39,7 @@ public abstract class ComponentPresenterActivity<
     }
 
     public void onComponentAvailable(ComponentT component) {
-
+        //noinspection unchecked
+        component.inject(this);
     }
 }
