@@ -13,5 +13,5 @@ Check out [@luszczuk's](https://twitter.com/luszczuk) (author of tomorrow-mvp) [
 
 ## Use
 ```
-compile 'eu.darken.ommvplib:library:7'
+compile 'eu.darken.ommvplib:library:+'
 ```
