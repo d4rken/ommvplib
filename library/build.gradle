@@ -38,12 +38,11 @@ dependencies {
     compile "com.android.support:preference-v7:${supportVersion}"
 
     compile "com.google.dagger:dagger:${daggerVersion}"
-//    compile "com.google.dagger:dagger-android:${daggerVersion}"
-    compile(name: 'dagger-android', ext: 'aar')
-//    compile"com.google.dagger:dagger-android-support:${daggerVersion}"
-    compile(name: 'dagger-android-support', ext: 'aar')
-//    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
-//    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    compile "com.google.dagger:dagger-android:${daggerVersion}"
+    compile "com.google.dagger:dagger-android-support:${daggerVersion}"
+
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
 }
 
 def credentialsFile = new File(System.properties['user.home'], ".bintray/bintray.properties")
