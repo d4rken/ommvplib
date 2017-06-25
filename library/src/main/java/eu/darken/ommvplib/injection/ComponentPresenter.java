@@ -39,4 +39,13 @@ public abstract class ComponentPresenter<
     public void onDestroy() {
 
     }
+
+    interface ViewAction<T extends Presenter.View> {
+        void runOnView(T v);
+    }
+
+    public void onView(ViewAction<ViewT> a) {
+        ViewT v = getView();
+        if (v != null) a.runOnView(v);
+    }
 }
