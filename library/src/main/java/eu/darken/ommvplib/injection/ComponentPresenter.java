@@ -40,7 +40,7 @@ public abstract class ComponentPresenter<
 
     }
 
-    interface ViewAction<T extends Presenter.View> {
+    public interface ViewAction<T extends Presenter.View> {
         void runOnView(T v);
     }
 
