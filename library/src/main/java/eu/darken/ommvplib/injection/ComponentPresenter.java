@@ -2,6 +2,7 @@ package eu.darken.ommvplib.injection;
 
 
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -20,21 +21,25 @@ public abstract class ComponentPresenter<
         return view;
     }
 
+    @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
     }
 
+    @CallSuper
     @Override
     public void onBindChange(@Nullable ViewT view) {
         this.view = view;
     }
 
+    @CallSuper
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
     }
 
+    @CallSuper
     @Override
     public void onDestroy() {
 

@@ -26,6 +26,7 @@ public class CountingPresenter extends ComponentPresenter<CountingView, Counting
 
     @Override
     public void onCreate(@Nullable Bundle bundle) {
+        super.onCreate(bundle);
         if (bundle != null) counter.setCounter(bundle.getInt("counter"));
     }
 
@@ -37,11 +38,13 @@ public class CountingPresenter extends ComponentPresenter<CountingView, Counting
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle bundle) {
+        super.onSaveInstanceState(bundle);
         bundle.putInt("counter", counter.getCurrent());
     }
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         Timber.d("onDestroy()");
     }
 }

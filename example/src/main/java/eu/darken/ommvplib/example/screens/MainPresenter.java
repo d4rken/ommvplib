@@ -24,11 +24,13 @@ public class MainPresenter extends ComponentPresenter<MainView, MainComponent> {
 
     @Override
     public void onCreate(@Nullable Bundle bundle) {
+        super.onCreate(bundle);
         if (bundle != null) lastPagerItemPosition = bundle.getInt("pos");
     }
 
     @Override
     public void onBindChange(@Nullable MainView view) {
+        super.onBindChange(view);
         if (view != null) view.showFragments(fragmentObjs);
         if (view != null) view.showPagerItem(lastPagerItemPosition);
     }
@@ -39,11 +41,7 @@ public class MainPresenter extends ComponentPresenter<MainView, MainComponent> {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle bundle) {
+        super.onSaveInstanceState(bundle);
         bundle.putInt("pos", lastPagerItemPosition);
-    }
-
-    @Override
-    public void onDestroy() {
-
     }
 }
