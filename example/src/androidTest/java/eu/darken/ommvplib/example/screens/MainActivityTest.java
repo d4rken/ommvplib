@@ -2,10 +2,10 @@ package eu.darken.ommvplib.example.screens;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.app.Fragment;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,19 +15,21 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Collections;
-import java.util.List;
-
 import dagger.android.AndroidInjector;
 import eu.darken.ommvplib.example.ExampleApplicationMock;
 import eu.darken.ommvplib.example.R;
-import eu.darken.ommvplib.example.screens.debug.DebugFragment;
+import eu.darken.ommvplib.example.screens.counting.CountingComponent;
+import eu.darken.ommvplib.example.screens.counting.CountingFragment;
+import eu.darken.ommvplib.example.screens.counting.CountingPresenter;
+import eu.darken.ommvplib.injection.ComponentSource;
 import eu.darken.ommvplib.injection.ManualInjector;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -37,18 +39,40 @@ public class MainActivityTest {
 
     @Rule public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
-    @Mock MainPresenter presenter;
+    ExampleApplicationMock app;
+
+
+    @Mock MainPresenter mainPresenter;
     @Mock MainComponent mainComponent;
-    private ExampleApplicationMock app;
+
+    @Mock ComponentSource<Fragment> fragmentInjector;
+    @Mock CountingPresenter countingPresenter;
+    @Mock CountingComponent countingComponent;
 
     @Before
     public void setUp() {
         app = (ExampleApplicationMock) InstrumentationRegistry.getTargetContext().getApplicationContext();
-        when(mainComponent.getPresenter()).thenReturn(presenter);
-        app.setActivityComponentSource(new Injector());
+        app.setActivityComponentSource(new ActivityInjector());
+
+        doAnswer(invocation -> {
+            MainActivity mainActivity = invocation.getArgument(0);
+            mainActivity.componentSource = fragmentInjector;
+            return null;
+        }).when(mainComponent).inject(any());
+        when(mainComponent.getPresenter()).thenReturn(mainPresenter);
+        when(mainPresenter.getComponent()).thenReturn(mainComponent);
+
+
+        doAnswer(invocation -> {
+            // Nothing to inject atm
+            return null;
+        }).when(countingComponent).inject(any());
+        when(fragmentInjector.get(any())).then(invocation -> countingComponent);
+        when(countingComponent.getPresenter()).thenReturn(countingPresenter);
+        when(countingPresenter.getComponent()).thenReturn(countingComponent);
     }
 
-    public class Injector implements ManualInjector<Activity> {
+    public class ActivityInjector implements ManualInjector<Activity> {
 
         @Override
         public AndroidInjector get(Activity instance) {
@@ -57,21 +81,29 @@ public class MainActivityTest {
 
         @Override
         public void inject(Activity instance) {
+            mainComponent.inject((MainActivity) instance);
         }
+
     }
 
     @Test
-    public void checkTextView() throws Throwable {
-        activityRule.launchActivity(new Intent());
-        final List<MainPagerAdapter.FragmentObj> fragmentObjs = Collections.singletonList(new MainPagerAdapter.FragmentObj(DebugFragment.class, "Debug"));
-        activityRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activityRule.getActivity().showFragments(fragmentObjs);
-            }
-        });
-        onView(withId(R.id.fragment_text)).check(matches(withText("Debug Text!")));
+    public void checkFragmentShowing() throws Throwable {
+        activityRule.launchActivity(null);
+
+        activityRule.runOnUiThread(() -> activityRule.getActivity().showFragment(CountingFragment.class));
+        onView(withId(R.id.fragment_button)).check(matches(withText("+1")));
     }
 
+    @Test
+    public void checkCounter() throws Throwable {
+        activityRule.launchActivity(null);
 
+        onView(withId(R.id.bindcounter)).check(matches(withText("Activity Rotation Count: 0")));
+
+        activityRule.runOnUiThread(() -> activityRule.getActivity().showBinderCounter(1));
+        onView(withId(R.id.bindcounter)).check(matches(withText("Activity Rotation Count: 1")));
+
+        activityRule.runOnUiThread(() -> activityRule.getActivity().showBinderCounter(2));
+        onView(withId(R.id.bindcounter)).check(matches(withText("Activity Rotation Count: 2")));
+    }
 }

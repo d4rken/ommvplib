@@ -1,16 +1,13 @@
 package eu.darken.ommvplib.base;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import eu.darken.ommvplib.base.support.PresenterSupportLoaderHelper;
 
 
-public abstract class PresenterActivity<
-        ViewT extends Presenter.View,
-        PresenterT extends Presenter<ViewT>>
+public abstract class PresenterActivity<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>>
         extends AppCompatActivity
         implements PresenterSupportLoaderHelper.Callback<ViewT, PresenterT> {
 
@@ -23,7 +20,7 @@ public abstract class PresenterActivity<
         new PresenterSupportLoaderHelper<ViewT, PresenterT>(this, getSupportLoaderManager(), savedInstanceState)
                 .fetch(getPresenterFactory(), getLoaderId(), new PresenterSupportLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
-                    public void onPresenterReady(@NonNull PresenterT presenter) {
+                    public void onPresenterReady(PresenterT presenter) {
                         PresenterActivity.this.presenter = presenter;
                         PresenterActivity.this.onPresenterReady(presenter);
                     }
@@ -59,12 +56,11 @@ public abstract class PresenterActivity<
     }
 
     @Override
-    public void onPresenterReady(@NonNull PresenterT presenter) { }
+    public void onPresenterReady(PresenterT presenter) { }
 
     @Override
     public void onPresenterDestroyed() { }
 
-    @NonNull
     protected abstract PresenterFactory<PresenterT> getPresenterFactory();
 
     public PresenterT getPresenter() {

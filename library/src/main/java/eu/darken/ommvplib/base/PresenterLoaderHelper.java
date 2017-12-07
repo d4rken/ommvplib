@@ -4,7 +4,6 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 
@@ -12,15 +11,15 @@ public class PresenterLoaderHelper<ViewT extends Presenter.View, PresenterT exte
 
     private final LoaderManager loaderManager;
     @Nullable private final Bundle savedState;
-    final Context context;
+    private final Context context;
 
-    public PresenterLoaderHelper(@NonNull Context context, @NonNull LoaderManager manager, @Nullable Bundle savedState) {
+    public PresenterLoaderHelper(Context context, LoaderManager manager, @Nullable Bundle savedState) {
         this.context = context;
         this.loaderManager = manager;
         this.savedState = savedState;
     }
 
-    public void fetch(@NonNull final PresenterFactory<PresenterT> factory, int loaderId, @NonNull final Callback<ViewT, PresenterT> callback) {
+    public void fetch(final PresenterFactory<PresenterT> factory, int loaderId, final Callback<ViewT, PresenterT> callback) {
         Loader<PresenterT> loader = loaderManager.getLoader(loaderId);
         if (loader instanceof PresenterLoader) {
             PresenterLoader presenterLoader = (PresenterLoader) loader;
@@ -49,7 +48,7 @@ public class PresenterLoaderHelper<ViewT extends Presenter.View, PresenterT exte
     }
 
     public interface Callback<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> {
-        void onPresenterReady(@NonNull PresenterT presenter);
+        void onPresenterReady(PresenterT presenter);
 
         void onPresenterDestroyed();
     }

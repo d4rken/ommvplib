@@ -2,7 +2,6 @@ package eu.darken.ommvplib.base;
 
 import android.content.Context;
 import android.content.Loader;
-import android.support.annotation.NonNull;
 
 
 class RetainingLoader<TypeT> extends Loader<TypeT> {
@@ -10,7 +9,7 @@ class RetainingLoader<TypeT> extends Loader<TypeT> {
     private ObjectFactory<TypeT> objectFactory;
     private TypeT objectToRetain;
 
-    RetainingLoader(@NonNull Context context, @NonNull ObjectFactory<TypeT> objectFactory) {
+    RetainingLoader(Context context, ObjectFactory<TypeT> objectFactory) {
         super(context);
         this.objectFactory = objectFactory;
     }

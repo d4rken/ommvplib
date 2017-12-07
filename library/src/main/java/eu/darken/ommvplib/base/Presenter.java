@@ -2,7 +2,6 @@ package eu.darken.ommvplib.base;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public interface Presenter<ViewT extends Presenter.View> {
@@ -10,7 +9,7 @@ public interface Presenter<ViewT extends Presenter.View> {
 
     void onBindChange(@Nullable ViewT view);
 
-    void onSaveInstanceState(@NonNull Bundle outState);
+    void onSaveInstanceState(Bundle outState);
 
     void onDestroy();
 

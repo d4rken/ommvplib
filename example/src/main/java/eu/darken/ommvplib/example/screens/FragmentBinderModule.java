@@ -9,22 +9,13 @@ import dagger.android.support.FragmentKey;
 import dagger.multibindings.IntoMap;
 import eu.darken.ommvplib.example.screens.counting.CountingComponent;
 import eu.darken.ommvplib.example.screens.counting.CountingFragment;
-import eu.darken.ommvplib.example.screens.settings.SettingsComponent;
-import eu.darken.ommvplib.example.screens.settings.SettingsFragment;
 
-@Module(subcomponents = {
-        CountingComponent.class,
-        SettingsComponent.class
-})
-abstract class MainActivityFragmentBinderModule {
+
+@Module(subcomponents = {CountingComponent.class})
+public abstract class FragmentBinderModule {
 
     @Binds
     @IntoMap
     @FragmentKey(CountingFragment.class)
     abstract AndroidInjector.Factory<? extends Fragment> counting(CountingComponent.Builder impl);
-
-    @Binds
-    @IntoMap
-    @FragmentKey(SettingsFragment.class)
-    abstract AndroidInjector.Factory<? extends Fragment> settings(SettingsComponent.Builder impl);
 }

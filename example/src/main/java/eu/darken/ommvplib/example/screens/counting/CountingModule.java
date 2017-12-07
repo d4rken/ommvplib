@@ -7,7 +7,7 @@ import dagger.Provides;
 public class CountingModule {
 
     @Provides
-    @CountingScope
+    @CountingComponent.Scope
     Counter provideCounter() {
         return new Counter(-1);
     }

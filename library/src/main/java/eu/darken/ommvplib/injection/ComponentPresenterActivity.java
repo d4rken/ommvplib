@@ -1,7 +1,5 @@
 package eu.darken.ommvplib.injection;
 
-import android.support.annotation.NonNull;
-
 import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.base.PresenterActivity;
 import eu.darken.ommvplib.base.PresenterFactory;
@@ -15,7 +13,6 @@ public abstract class ComponentPresenterActivity<
         extends PresenterActivity<ViewT, PresenterT>
         implements PresenterFactory<PresenterT> {
 
-    @NonNull
     @Override
     public PresenterFactory<PresenterT> getPresenterFactory() {
         return this;
@@ -27,15 +24,15 @@ public abstract class ComponentPresenterActivity<
         //noinspection unchecked
         final ComponentT component = (ComponentT) injectorSource.activityInjector().get(this);
         final PresenterT presenter = component.getPresenter();
-        presenter.component = component;
+        presenter.setComponent(component);
         return presenter;
     }
 
     @Override
-    public void onPresenterReady(@NonNull PresenterT presenter) {
+    public void onPresenterReady(PresenterT presenter) {
         super.onPresenterReady(presenter);
         this.presenter = presenter;
-        onComponentAvailable(presenter.component);
+        onComponentAvailable(presenter.getComponent());
     }
 
     public void onComponentAvailable(ComponentT component) {

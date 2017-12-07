@@ -1,7 +1,17 @@
-# ommvplib
-One More MVP Lib
+# One More MVP Lib
+This library offers a structure for building Android apps follow MVP principles. Adhering to this structure yields a modular and well testable app.
 
-Based on:
+The core concept consists of Dagger2's `AndroidInjector` while using Android's `Loader` to retain presenters and components across lifecycle events
+
+## Quickstart
+1. Add the library
+```
+compile 'eu.darken.ommvplib:library:0.1.0'
+```
+2. There is no Quickstart. Look at the example app. It's not as complicated as it looks. 
+
+## Acknowledgements
+This library combines and refactored several other concepts. It was based on:
 
 * [tomorrow-mvp](https://github.com/michal-luszczuk/tomorrow-mvp) by Michał Łuszczuk
 * [toegether-mvp](https://github.com/laenger/together-mvp) by Christian Langer
@@ -10,8 +20,3 @@ Based on:
 * [MCE3 Dagger 2 Talk](https://www.youtube.com/watch?v=iwjXqRlEevg) by Gregory Kick
 
 Check out [@luszczuk's](https://twitter.com/luszczuk) (author of tomorrow-mvp) [comparison of Android MVP approaches](http://blog.propaneapps.com/android/mvp-for-android/).
-
-## Use
-```
-compile 'eu.darken.ommvplib:library:+'
-```

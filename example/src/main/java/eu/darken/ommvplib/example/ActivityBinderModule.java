@@ -1,7 +1,5 @@
 package eu.darken.ommvplib.example;
 
-import android.app.Activity;
-
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.ActivityKey;
@@ -16,5 +14,5 @@ abstract class ActivityBinderModule {
     @Binds
     @IntoMap
     @ActivityKey(MainActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity> mainActivity(MainComponent.Builder impl);
+    abstract AndroidInjector.Factory<? extends android.app.Activity> mainActivity(MainComponent.Builder impl);
 }

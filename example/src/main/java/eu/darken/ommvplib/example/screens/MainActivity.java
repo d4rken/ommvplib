@@ -1,12 +1,11 @@
 package eu.darken.ommvplib.example.screens;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -19,41 +18,13 @@ import eu.darken.ommvplib.injection.ManualInjector;
 import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInjector;
 
 
-public class MainActivity extends ComponentPresenterActivity<MainView, MainPresenter, MainComponent>
-        implements MainView, HasManualSupportFragmentInjector {
+public class MainActivity extends ComponentPresenterActivity<MainPresenter.View, MainPresenter, MainComponent>
+        implements MainPresenter.View, HasManualSupportFragmentInjector {
 
     @Inject ComponentSource<Fragment> componentSource;
 
-    @BindView(R.id.tabs) TabLayout tabLayout;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.viewpager) ViewPager viewPager;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-
-        viewPager.setOffscreenPageLimit(2);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                getPresenter().onPagerItemSelected(position);
-            }
-        });
-    }
-
-    @Override
-    public void showPagerItem(int position) {
-        viewPager.setCurrentItem(position, false);
-    }
-
-    @Override
-    public void showFragments(List<MainPagerAdapter.FragmentObj> fragmentbjects) {
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragmentbjects));
-    }
+    @BindView(R.id.container) ViewGroup container;
+    @BindView(R.id.bindcounter) TextView bindCounter;
 
     @Override
     public Class<? extends MainPresenter> getTypeClazz() {
@@ -63,5 +34,23 @@ public class MainActivity extends ComponentPresenterActivity<MainView, MainPrese
     @Override
     public ManualInjector<Fragment> supportFragmentInjector() {
         return componentSource;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public void showFragment(Class<? extends Fragment> fragmentClass) {
+        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
+        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commitNow();
+    }
+
+    @Override
+    public void showBinderCounter(int count) {
+        bindCounter.setText(String.format(Locale.US, "Activity Rotation Count: %d", count));
     }
 }
