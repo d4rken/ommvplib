@@ -10,7 +10,7 @@ The core concept consists of Dagger2's `AndroidInjector` while using Android's `
 ## Quickstart
 1. Add the library
 ```
-compile 'eu.darken.ommvplib:library:0.1.0'
+implementation 'eu.darken.ommvplib:library:0.1.0'
 ```
 2. There is no Quickstart. Look at the example app. It's not as complicated as it looks. 
 
