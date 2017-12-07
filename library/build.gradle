@@ -1,3 +1,9 @@
+plugins {
+    id "com.github.dcendents.android-maven" version "2.0"
+    id "com.jfrog.bintray" version "1.8.0"
+    id "jacoco"
+    id "com.github.kt3k.coveralls" version "2.5.0-x"
+}
 apply plugin: 'com.android.library'
 
 def versionMajor = 0
@@ -20,6 +26,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -27,27 +35,53 @@ android {
     }
 }
 
-// Needed until this is fixed:
-// https://code.google.com/p/android/issues/detail?id=224272
-android.libraryVariants.all {
-    def aptOutputDir = new File(buildDir, "generated/source/apt/${it.unitTestVariant.dirName}")
-    it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
-}
-
 dependencies {
-    compile "com.android.support:support-annotations:${supportVersion}"
-    compile "com.android.support:appcompat-v7:${supportVersion}"
-    compile "com.android.support:preference-v7:${supportVersion}"
+    implementation "com.android.support:support-annotations:${supportVersion}"
+    implementation "com.android.support:appcompat-v7:${supportVersion}"
+    implementation "com.android.support:preference-v7:${supportVersion}"
 
-    compile "com.google.dagger:dagger:${daggerVersion}"
-    compile "com.google.dagger:dagger-android:${daggerVersion}"
-    compile "com.google.dagger:dagger-android-support:${daggerVersion}"
+    implementation "com.google.dagger:dagger:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
 
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.8.9'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.8.9'
+}
+
+
+// https://stackoverflow.com/a/34572606/1251958
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+afterEvaluate {
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompiler.classpath.files
+    })
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    classDirectories = fileTree(
+            dir: './build/intermediates/classes/debug',
+            excludes: ['eu/darken/R*.class',
+                       '**/BuildConfig.class'
+            ])
+    sourceDirectories = files([
+            'src/main/java'
+    ])
+    executionData = files('build/jacoco/testDebugUnitTest.exec')
+}
+
+coveralls {
+    jacocoReportPath = 'build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml'
+    sourceDirs = ['src/main/java']
 }
 
 def credentialsFile = new File(System.properties['user.home'], ".bintray/bintray.properties")
@@ -70,6 +104,7 @@ ext {
 
     siteUrl = 'https://github.com/d4rken/ommvplib'
     gitUrl = 'https://github.com/d4rken/ommvplib.git'
+    issuesUrl = 'https://github.com/d4rken/ommvplib/issues'
 
     libraryVersion = myVersionName
 
