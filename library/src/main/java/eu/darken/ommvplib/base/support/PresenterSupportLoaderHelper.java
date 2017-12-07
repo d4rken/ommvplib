@@ -2,7 +2,6 @@ package eu.darken.ommvplib.base.support;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -15,15 +14,15 @@ public class PresenterSupportLoaderHelper<ViewT extends Presenter.View, Presente
 
     private final LoaderManager loaderManager;
     @Nullable private final Bundle savedState;
-    final Context context;
+    private final Context context;
 
-    public PresenterSupportLoaderHelper(@NonNull Context context, @NonNull LoaderManager manager, @Nullable Bundle savedState) {
+    public PresenterSupportLoaderHelper(Context context, LoaderManager manager, @Nullable Bundle savedState) {
         this.context = context;
         this.loaderManager = manager;
         this.savedState = savedState;
     }
 
-    public void fetch(@NonNull final PresenterFactory<PresenterT> factory, int loaderId, @NonNull final Callback<ViewT, PresenterT> callback) {
+    public void fetch(final PresenterFactory<PresenterT> factory, int loaderId, final Callback<ViewT, PresenterT> callback) {
         Loader<PresenterT> loader = loaderManager.getLoader(loaderId);
         if (loader instanceof PresenterSupportLoader) {
             PresenterSupportLoader presenterLoader = (PresenterSupportLoader) loader;
@@ -52,7 +51,7 @@ public class PresenterSupportLoaderHelper<ViewT extends Presenter.View, Presente
     }
 
     public interface Callback<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> {
-        void onPresenterReady(@NonNull PresenterT presenter);
+        void onPresenterReady(PresenterT presenter);
 
         void onPresenterDestroyed();
     }

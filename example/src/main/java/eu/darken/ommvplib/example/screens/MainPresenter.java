@@ -1,47 +1,41 @@
 package eu.darken.ommvplib.example.screens;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import java.util.List;
+import android.support.v4.app.Fragment;
 
 import javax.inject.Inject;
 
+import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.injection.ComponentPresenter;
 
 
-@MainScope
-public class MainPresenter extends ComponentPresenter<MainView, MainComponent> {
-    private final List<MainPagerAdapter.FragmentObj> fragmentObjs;
-    private int lastPagerItemPosition;
+@MainComponent.Scope
+public class MainPresenter extends ComponentPresenter<MainPresenter.View, MainComponent> {
+
+    private final Class<? extends Fragment> startingFragment;
+    private boolean doInit = true;
+    private int bindCounter = 0;
 
     @Inject
-    MainPresenter(List<MainPagerAdapter.FragmentObj> fragmentObjs, int defaultStartPage) {
-        this.fragmentObjs = fragmentObjs;
-        this.lastPagerItemPosition = defaultStartPage;
+    MainPresenter(Class<? extends Fragment> startingFragment) {
+        this.startingFragment = startingFragment;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle bundle) {
-        super.onCreate(bundle);
-        if (bundle != null) lastPagerItemPosition = bundle.getInt("pos");
-    }
-
-    @Override
-    public void onBindChange(@Nullable MainView view) {
+    public void onBindChange(@Nullable View view) {
         super.onBindChange(view);
-        if (view != null) view.showFragments(fragmentObjs);
-        if (view != null) view.showPagerItem(lastPagerItemPosition);
+        onView(v -> v.showBinderCounter(++bindCounter));
+        onView(v -> {
+            if (doInit) {
+                doInit = false;
+                v.showFragment(startingFragment);
+            }
+        });
     }
 
-    void onPagerItemSelected(int position) {
-        lastPagerItemPosition = position;
-    }
+    public interface View extends Presenter.View {
+        void showBinderCounter(int count);
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        bundle.putInt("pos", lastPagerItemPosition);
+        void showFragment(Class<? extends Fragment> fragmentClass);
     }
 }

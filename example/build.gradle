@@ -21,7 +21,8 @@ android {
     }
 
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 // Needed until this is fixed:
@@ -56,16 +57,14 @@ dependencies {
     compile "com.jakewharton:butterknife:${butterknifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 
-    compile 'com.jakewharton.timber:timber:4.5.0'
+    compile 'com.jakewharton.timber:timber:4.6.0'
 
-    androidTestCompile 'org.mockito:mockito-core:2.6.3'
+    androidTestCompile 'org.mockito:mockito-core:2.8.9'
     androidTestCompile 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
+    testCompile 'org.mockito:mockito-core:2.8.9'
+    testCompile 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 
     androidTestCompile "com.google.code.findbugs:jsr305:3.0.1"
-
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
     // Android runner and rules support
     androidTestCompile('com.android.support.test:runner:0.5', {

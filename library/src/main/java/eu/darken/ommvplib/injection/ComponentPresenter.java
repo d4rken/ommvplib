@@ -8,12 +8,10 @@ import android.support.annotation.Nullable;
 
 import eu.darken.ommvplib.base.Presenter;
 
-public abstract class ComponentPresenter<
-        ViewT extends Presenter.View,
-        ComponentT extends PresenterComponent<ViewT, ? extends ComponentPresenter>>
+public abstract class ComponentPresenter<ViewT extends Presenter.View, ComponentT extends PresenterComponent<ViewT, ? extends ComponentPresenter>>
         implements Presenter<ViewT> {
 
-    protected ComponentT component;
+    private ComponentT component;
     private ViewT view;
 
     @Nullable
@@ -43,6 +41,14 @@ public abstract class ComponentPresenter<
     @Override
     public void onDestroy() {
 
+    }
+
+    void setComponent(ComponentT component) {
+        this.component = component;
+    }
+
+    public ComponentT getComponent() {
+        return component;
     }
 
     public interface ViewAction<T extends Presenter.View> {

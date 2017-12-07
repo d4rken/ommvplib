@@ -6,12 +6,13 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
+import eu.darken.ommvplib.base.Presenter;
 import eu.darken.ommvplib.injection.ComponentPresenter;
 import timber.log.Timber;
 
 
-@CountingScope
-public class CountingPresenter extends ComponentPresenter<CountingView, CountingComponent> {
+@CountingComponent.Scope
+public class CountingPresenter extends ComponentPresenter<CountingPresenter.View, CountingComponent> {
 
     private final Counter counter;
 
@@ -31,7 +32,7 @@ public class CountingPresenter extends ComponentPresenter<CountingView, Counting
     }
 
     @Override
-    public void onBindChange(@Nullable CountingView view) {
+    public void onBindChange(@Nullable View view) {
         super.onBindChange(view);
         if (view != null) view.showText(String.valueOf(counter.getCurrent()));
     }
@@ -46,5 +47,9 @@ public class CountingPresenter extends ComponentPresenter<CountingView, Counting
     public void onDestroy() {
         super.onDestroy();
         Timber.d("onDestroy()");
+    }
+
+    public interface View extends Presenter.View {
+        void showText(String text);
     }
 }

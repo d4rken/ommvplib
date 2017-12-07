@@ -2,7 +2,5 @@
 
 <resources>
     <string name="app_name">One More MVP Lib</string>
-
-    <string name="shift">shift!</string>
-    <string name="count">count!</string>
+    <string name="count">+1</string>
 </resources>

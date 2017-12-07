@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 def versionMajor = 0
-def versionMinor = 0
-def versionPatch = 10
+def versionMinor = 1
+def versionPatch = 0
 def myVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
 def myVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -26,12 +26,14 @@ android {
         }
     }
 }
+
 // Needed until this is fixed:
 // https://code.google.com/p/android/issues/detail?id=224272
 android.libraryVariants.all {
     def aptOutputDir = new File(buildDir, "generated/source/apt/${it.unitTestVariant.dirName}")
     it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
 }
+
 dependencies {
     compile "com.android.support:support-annotations:${supportVersion}"
     compile "com.android.support:appcompat-v7:${supportVersion}"
@@ -43,12 +45,15 @@ dependencies {
 
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.8.9'
 }
 
 def credentialsFile = new File(System.properties['user.home'], ".bintray/bintray.properties")
 ext {
     if (credentialsFile.canRead()) {
-        def Properties props = new Properties()
+        Properties props = new Properties()
         props.load(new FileInputStream(credentialsFile))
         bintrayUser = props['bintray.user']
         bintrayApiKey = props['bintray.apikey']

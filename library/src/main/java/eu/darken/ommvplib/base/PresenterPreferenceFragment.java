@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.view.View;
 
 import eu.darken.ommvplib.base.support.PresenterSupportLoaderHelper;
 
-public abstract class PresenterPreferenceFragment<
-        ViewT extends Presenter.View,
-        PresenterT extends Presenter<ViewT>>
+public abstract class PresenterPreferenceFragment<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>>
         extends PreferenceFragmentCompat
         implements PresenterSupportLoaderHelper.Callback<ViewT, PresenterT> {
 
@@ -17,7 +16,7 @@ public abstract class PresenterPreferenceFragment<
     protected PresenterT presenter;
 
     @Override
-    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -27,7 +26,7 @@ public abstract class PresenterPreferenceFragment<
         new PresenterSupportLoaderHelper<ViewT, PresenterT>(getContext(), getLoaderManager(), savedInstanceState)
                 .fetch(getPresenterFactory(), getLoaderId(), new PresenterSupportLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
-                    public void onPresenterReady(@NonNull PresenterT presenter) {
+                    public void onPresenterReady(PresenterT presenter) {
                         PresenterPreferenceFragment.this.presenter = presenter;
                         PresenterPreferenceFragment.this.onPresenterReady(presenter);
                     }
@@ -64,12 +63,11 @@ public abstract class PresenterPreferenceFragment<
     }
 
     @Override
-    public void onPresenterReady(@NonNull PresenterT presenter) { }
+    public void onPresenterReady(PresenterT presenter) { }
 
     @Override
     public void onPresenterDestroyed() { }
 
-    @NonNull
     protected abstract PresenterFactory<PresenterT> getPresenterFactory();
 
     public PresenterT getPresenter() {

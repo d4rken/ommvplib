@@ -2,12 +2,10 @@ package eu.darken.ommvplib.base;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
-public abstract class PresenterFragment<
-        ViewT extends Presenter.View,
-        PresenterT extends Presenter<ViewT>>
+public abstract class PresenterFragment<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>>
         extends Fragment
         implements PresenterLoaderHelper.Callback<ViewT, PresenterT> {
 
@@ -15,7 +13,7 @@ public abstract class PresenterFragment<
     protected PresenterT presenter;
 
     @Override
-    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -25,7 +23,7 @@ public abstract class PresenterFragment<
         new PresenterLoaderHelper<ViewT, PresenterT>(getActivity(), getLoaderManager(), savedInstanceState)
                 .fetch(getPresenterFactory(), getLoaderId(), new PresenterLoaderHelper.Callback<ViewT, PresenterT>() {
                     @Override
-                    public void onPresenterReady(@NonNull PresenterT presenter) {
+                    public void onPresenterReady(PresenterT presenter) {
                         PresenterFragment.this.presenter = presenter;
                         PresenterFragment.this.onPresenterReady(presenter);
                     }
@@ -62,14 +60,13 @@ public abstract class PresenterFragment<
     }
 
     @Override
-    public void onPresenterReady(@NonNull PresenterT presenter) {
+    public void onPresenterReady(PresenterT presenter) {
         this.presenter = presenter;
     }
 
     @Override
     public void onPresenterDestroyed() { }
 
-    @NonNull
     protected abstract PresenterFactory<PresenterT> getPresenterFactory();
 
     public PresenterT getPresenter() {
