@@ -1,4 +1,8 @@
 # One More MVP Lib
+[ ![Download](https://api.bintray.com/packages/darken/maven/ommvplib/images/download.svg) ](https://bintray.com/darken/maven/ommvplib/_latestVersion)
+[![Coverage Status](https://coveralls.io/repos/github/d4rken/ommvplib/badge.svg)](https://coveralls.io/github/d4rken/ommvplib)
+[![Build Status](https://travis-ci.org/d4rken/ommvplib.svg?branch=master)](https://travis-ci.org/d4rken/ommvplib)
+
 This library offers a structure for building Android apps follow MVP principles. Adhering to this structure yields a modular and well testable app.
 
 The core concept consists of Dagger2's `AndroidInjector` while using Android's `Loader` to retain presenters and components across lifecycle events
