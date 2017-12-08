@@ -1,5 +1,7 @@
 package eu.darken.ommvplib.example.screens;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -19,6 +21,18 @@ public class MainPresenter extends ComponentPresenter<MainPresenter.View, MainCo
     @Inject
     MainPresenter(Class<? extends Fragment> startingFragment) {
         this.startingFragment = startingFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) bindCounter = savedInstanceState.getInt("counter");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("counter", bindCounter);
     }
 
     @Override

@@ -23,6 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CountingFragmentTest {
@@ -57,6 +58,7 @@ public class CountingFragmentTest {
     @Before
     public void setUp() {
         doAnswer(invocationOnMock -> null).when(presenter).onBindChange(any());
+        when(presenter.getComponent()).thenReturn(component);
         fragmentRule.setManualInjector(injector);
     }
 
