@@ -18,11 +18,9 @@ import eu.darken.ommvplib.injection.activity.ActivityComponent;
 public interface MainComponent extends ActivityComponent<MainActivity>, PresenterComponent<MainPresenter.View, MainPresenter> {
 
     @Subcomponent.Builder
-    abstract class Builder extends ActivityComponent.Builder<MainActivity, MainComponent> {
-    }
+    abstract class Builder extends ActivityComponent.Builder<MainActivity, MainComponent> {}
 
     @javax.inject.Scope
     @Retention(RetentionPolicy.RUNTIME)
-    @interface Scope {
-    }
+    @interface Scope {}
 }

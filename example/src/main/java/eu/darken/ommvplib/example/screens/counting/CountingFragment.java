@@ -3,6 +3,7 @@ package eu.darken.ommvplib.example.screens.counting;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,35 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eu.darken.ommvplib.base.InstanceStatePublisher;
+import eu.darken.ommvplib.base.OMMVPLib;
 import eu.darken.ommvplib.example.R;
-import eu.darken.ommvplib.injection.ComponentPresenterSupportFragment;
+import eu.darken.ommvplib.injection.InjectedPresenter;
+import eu.darken.ommvplib.injection.PresenterInjectionCallback;
 
-public class CountingFragment extends ComponentPresenterSupportFragment<CountingPresenter.View, CountingPresenter, CountingComponent> implements CountingPresenter.View {
+public class CountingFragment extends Fragment implements CountingPresenter.View {
 
     @BindView(R.id.fragment_text) TextView textView;
 
+    private InstanceStatePublisher statePublisher;
+    private OMMVPLib<CountingPresenter.View, CountingPresenter> ommvpLib;
+
     @Override
-    public Class<? extends CountingPresenter> getTypeClazz() {
-        return CountingPresenter.class;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        statePublisher = new InstanceStatePublisher();
+        statePublisher.onCreate(savedInstanceState);
+        ommvpLib = OMMVPLib.<CountingPresenter.View, CountingPresenter>builder()
+                .statePublisher(statePublisher)
+                .presenterCallback(new PresenterInjectionCallback<>(this))
+                .presenterSource(new InjectedPresenter<>(this))
+                .attach(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        statePublisher.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -37,6 +57,6 @@ public class CountingFragment extends ComponentPresenterSupportFragment<Counting
 
     @OnClick(R.id.fragment_button)
     void onCountClick() {
-        getPresenter().onCountClick();
+        ommvpLib.getPresenter().onCountClick();
     }
 }

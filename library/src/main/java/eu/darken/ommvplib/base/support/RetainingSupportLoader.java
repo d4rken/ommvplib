@@ -3,7 +3,7 @@ package eu.darken.ommvplib.base.support;
 import android.content.Context;
 import android.support.v4.content.Loader;
 
-import eu.darken.ommvplib.base.ObjectFactory;
+import eu.darken.ommvplib.extra.ObjectFactory;
 
 
 class RetainingSupportLoader<TypeT> extends Loader<TypeT> {

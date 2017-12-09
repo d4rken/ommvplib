@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import eu.darken.ommvplib.base.Presenter;
-import eu.darken.ommvplib.base.PresenterFactory;
+import eu.darken.ommvplib.base.PresenterSource;
 
 
 public class PresenterSupportLoader<ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>>
@@ -13,7 +13,7 @@ public class PresenterSupportLoader<ViewT extends Presenter.View, PresenterT ext
 
     private Bundle savedState;
 
-    public PresenterSupportLoader(Context context, PresenterFactory<PresenterT> factory, @Nullable Bundle savedState) {
+    public PresenterSupportLoader(Context context, PresenterSource<PresenterT> factory, @Nullable Bundle savedState) {
         super(context, factory);
         this.savedState = savedState;
     }

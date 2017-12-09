@@ -9,7 +9,7 @@ public class PresenterLoader<ViewT extends Presenter.View, PresenterT extends Pr
 
     private Bundle savedState;
 
-    public PresenterLoader(Context context, PresenterFactory<PresenterT> factory, @Nullable Bundle savedState) {
+    public PresenterLoader(Context context, PresenterSource<PresenterT> factory, @Nullable Bundle savedState) {
         super(context, factory);
         this.savedState = savedState;
     }

@@ -19,7 +19,7 @@ allprojects {
 ext {
     minSdkVersion = 16
     compileSdkVersion = 27
-    buildToolsVersion = '27.0.1'
+    buildToolsVersion = '27.0.2'
     targetSdkVersion = 27
 
     supportVersion = '27.0.2'
