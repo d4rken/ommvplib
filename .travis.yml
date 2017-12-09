@@ -12,7 +12,7 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-27.0.1
+    - build-tools-27.0.2
     - android-27
     - sys-img-armeabi-v7a-android-27
     - extra-android-support
@@ -24,6 +24,7 @@ android:
 
 before_install:
   - chmod +x gradlew
+  - yes | sdkmanager --licenses
 
 script:
   - ./gradlew clean assemble test
