@@ -1,7 +1,9 @@
-package eu.darken.ommvplib.extra;
+package eu.darken.ommvplib.base;
 
 import android.content.Context;
 import android.content.Loader;
+
+import eu.darken.ommvplib.extra.ObjectFactory;
 
 
 public class RetainingLoader<TypeT> extends Loader<TypeT> {

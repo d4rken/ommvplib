@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import eu.darken.ommvplib.base.InstanceStatePublisher;
 import eu.darken.ommvplib.base.OMMVPLib;
 import eu.darken.ommvplib.example.R;
 import eu.darken.ommvplib.injection.ComponentSource;
@@ -21,15 +22,14 @@ import eu.darken.ommvplib.injection.PresenterInjectionCallback;
 import eu.darken.ommvplib.injection.fragment.support.HasManualSupportFragmentInjector;
 
 
-public class MainActivity extends AppCompatActivity
-        implements MainPresenter.View, HasManualSupportFragmentInjector {
+public class MainActivity extends AppCompatActivity implements MainPresenter.View, HasManualSupportFragmentInjector {
 
     @Inject ComponentSource<Fragment> componentSource;
 
     @BindView(R.id.container) ViewGroup container;
     @BindView(R.id.bindcounter) TextView bindCounter;
 
-    private OMMVPLib.InstanceStatePublisher statePublisher;
+    private InstanceStatePublisher statePublisher;
 
     @Override
     public ManualInjector<Fragment> supportFragmentInjector() {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        statePublisher = new OMMVPLib.InstanceStatePublisher();
+        statePublisher = new InstanceStatePublisher();
         statePublisher.onCreate(savedInstanceState);
         OMMVPLib.<MainPresenter.View, MainPresenter>builder()
                 .statePublisher(statePublisher)

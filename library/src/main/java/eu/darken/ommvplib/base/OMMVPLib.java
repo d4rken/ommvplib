@@ -25,10 +25,10 @@ public class OMMVPLib<ViewT extends Presenter.View, PresenterT extends Presenter
         this.loaderFactory = builder.loaderFactory;
         this.statePublisher = builder.statePublisher;
 
-        go();
+        attach();
     }
 
-    private void go() {
+    private void attach() {
         if (this.statePublisher != null) {
             this.statePublisher.setInternalCallback(new InstanceStateCallback() {
                 @Override
@@ -74,42 +74,9 @@ public class OMMVPLib<ViewT extends Presenter.View, PresenterT extends Presenter
         });
     }
 
+    @Nullable
     public PresenterT getPresenter() {
         return presenter;
-    }
-
-    public static class InstanceStatePublisher implements InstanceStateCallback {
-        private InstanceStateCallback internalCallback;
-        private Bundle savedInstanceState;
-        private Bundle outState;
-
-        void setInternalCallback(InstanceStateCallback internalCallback) {
-            this.internalCallback = internalCallback;
-            if (savedInstanceState != null) {
-                internalCallback.onCreate(savedInstanceState);
-                savedInstanceState = null;
-            }
-            if (outState != null) {
-                internalCallback.onSaveInstanceState(outState);
-                outState = null;
-            }
-        }
-
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            if (internalCallback != null) internalCallback.onCreate(savedInstanceState);
-            else this.savedInstanceState = savedInstanceState;
-        }
-
-        public void onSaveInstanceState(Bundle outState) {
-            if (internalCallback != null) internalCallback.onSaveInstanceState(outState);
-            else this.outState = outState;
-        }
-    }
-
-    interface InstanceStateCallback {
-        void onCreate(@Nullable Bundle savedInstanceState);
-
-        void onSaveInstanceState(Bundle outState);
     }
 
     public static <ViewT extends Presenter.View, PresenterT extends Presenter<ViewT>> Builder<ViewT, PresenterT> builder() {
@@ -124,34 +91,43 @@ public class OMMVPLib<ViewT extends Presenter.View, PresenterT extends Presenter
         private LoaderFactory<ViewT, PresenterT> loaderFactory;
         private InstanceStatePublisher statePublisher;
 
+        /**
+         * If you want the presenter to be able to store data via {@link Activity#onSaveInstanceState(Bundle)} then you need to call this.
+         *
+         * @param statePublisher pass a {@link InstanceStatePublisher object} that you have to call on in onCreate()/onSaveInstance()
+         */
         public Builder<ViewT, PresenterT> statePublisher(InstanceStatePublisher statePublisher) {
             this.statePublisher = statePublisher;
             return this;
         }
 
+        /**
+         * For injection you probably want to pass a {@link eu.darken.ommvplib.injection.PresenterInjectionCallback}
+         */
         public Builder<ViewT, PresenterT> presenterCallback(LoaderFactory.Callback<ViewT, PresenterT> callback) {
             this.callback = callback;
             return this;
         }
 
+        /**
+         * For injection pass an {@link eu.darken.ommvplib.injection.InjectedPresenter}
+         */
         public Builder<ViewT, PresenterT> presenterSource(PresenterSource<PresenterT> presenterSource) {
             this.presenterSource = presenterSource;
             return this;
         }
 
-        public Builder<ViewT, PresenterT> loaderFactory(LoaderFactory<ViewT, PresenterT> loaderFactory) {
-            this.loaderFactory = loaderFactory;
-            return this;
-        }
-
+        /**
+         * @param lifecycleOwner Your {@link AppCompatActivity}, {@link Fragment} or {@link android.support.v4.app.Fragment}
+         */
         public OMMVPLib<ViewT, PresenterT> attach(ViewT lifecycleOwner) {
             if (presenterSource == null) {
-                if (lifecycleOwner instanceof PresenterSource) { //noinspection unchecked
+                if (lifecycleOwner instanceof PresenterSource) {
+                    //noinspection unchecked
                     presenterSource = (PresenterSource<PresenterT>) lifecycleOwner;
-                } else {
-                    throw new NullPointerException("PresenterFactory is null");
-                }
+                } else throw new NullPointerException("PresenterFactory is null");
             }
+
             if (loaderFactory == null) {
                 if (lifecycleOwner instanceof AppCompatActivity) {
                     AppCompatActivity activity = (AppCompatActivity) lifecycleOwner;
@@ -166,7 +142,7 @@ public class OMMVPLib<ViewT extends Presenter.View, PresenterT extends Presenter
                     android.support.v4.app.Fragment fragment = (android.support.v4.app.Fragment) lifecycleOwner;
                     loaderFactory = new PresenterSupportLoaderFactory<>(fragment.getContext(), fragment.getLoaderManager(), loaderId, presenterSource);
                 } else {
-                    throw new RuntimeException("Couldn't determine correct LoaderFactory. Use loaderFactory(...) to manually specify");
+                    throw new RuntimeException("Couldn't determine correct LoaderFactory.");
                 }
             }
             this.lifecycleOwner = lifecycleOwner;

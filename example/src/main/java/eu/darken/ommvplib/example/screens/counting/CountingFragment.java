@@ -12,6 +12,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eu.darken.ommvplib.base.InstanceStatePublisher;
 import eu.darken.ommvplib.base.OMMVPLib;
 import eu.darken.ommvplib.example.R;
 import eu.darken.ommvplib.injection.InjectedPresenter;
@@ -21,13 +22,13 @@ public class CountingFragment extends Fragment implements CountingPresenter.View
 
     @BindView(R.id.fragment_text) TextView textView;
 
-    private OMMVPLib.InstanceStatePublisher statePublisher;
+    private InstanceStatePublisher statePublisher;
     private OMMVPLib<CountingPresenter.View, CountingPresenter> ommvpLib;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        statePublisher = new OMMVPLib.InstanceStatePublisher();
+        statePublisher = new InstanceStatePublisher();
         statePublisher.onCreate(savedInstanceState);
         ommvpLib = OMMVPLib.<CountingPresenter.View, CountingPresenter>builder()
                 .statePublisher(statePublisher)
