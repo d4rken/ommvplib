@@ -24,7 +24,6 @@ android:
 
 before_install:
   - chmod +x gradlew
-  - yes | sdkmanager --licenses
 
 script:
   - ./gradlew clean assemble test
