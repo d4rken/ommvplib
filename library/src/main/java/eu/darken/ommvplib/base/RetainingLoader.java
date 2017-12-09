@@ -3,13 +3,15 @@ package eu.darken.ommvplib.base;
 import android.content.Context;
 import android.content.Loader;
 
+import eu.darken.ommvplib.extra.ObjectFactory;
 
-class RetainingLoader<TypeT> extends Loader<TypeT> {
+
+public class RetainingLoader<TypeT> extends Loader<TypeT> {
 
     private ObjectFactory<TypeT> objectFactory;
     private TypeT objectToRetain;
 
-    RetainingLoader(Context context, ObjectFactory<TypeT> objectFactory) {
+    public RetainingLoader(Context context, ObjectFactory<TypeT> objectFactory) {
         super(context);
         this.objectFactory = objectFactory;
     }
@@ -28,7 +30,7 @@ class RetainingLoader<TypeT> extends Loader<TypeT> {
         deliverResult(objectToRetain);
     }
 
-    TypeT getObject() {
+    public TypeT getObject() {
         return objectToRetain;
     }
 

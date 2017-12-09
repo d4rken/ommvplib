@@ -7,13 +7,17 @@ plugins {
 apply plugin: 'com.android.library'
 
 def versionMajor = 0
-def versionMinor = 1
+def versionMinor = 2
 def versionPatch = 0
 def myVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
 def myVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 //noinspection GroovyMissingReturnStatement
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
@@ -36,6 +40,10 @@ android {
 }
 
 dependencies {
+
+    implementation "android.arch.lifecycle:common:1.0.3"
+    implementation "android.arch.lifecycle:common-java8:1.0.0"
+
     implementation "com.android.support:support-annotations:${supportVersion}"
     implementation "com.android.support:appcompat-v7:${supportVersion}"
     implementation "com.android.support:preference-v7:${supportVersion}"
@@ -50,7 +58,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.8.9'
 }
-
 
 // https://stackoverflow.com/a/34572606/1251958
 task javadoc(type: Javadoc) {

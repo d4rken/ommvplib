@@ -22,6 +22,7 @@ public class ComponentSource<T> implements ManualInjector<T> {
         get(instance).inject(instance);
     }
 
+    @Override
     public AndroidInjector<T> get(T instance) {
         //noinspection SuspiciousMethodCalls
         Provider<AndroidInjector.Factory<? extends T>> factoryProvider = injectorFactories.get(instance.getClass());
