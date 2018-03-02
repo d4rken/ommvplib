@@ -16,8 +16,8 @@ public class OMMVPLib<ViewT extends Presenter.View, PresenterT extends Presenter
     private final LoaderFactory.Callback<ViewT, PresenterT> callback;
     private final InstanceStatePublisher statePublisher;
     private final LifecycleOwner lifecycleOwner;
-    private PresenterT presenter;
-    private Bundle savedState;
+    @Nullable private PresenterT presenter;
+    @Nullable private Bundle savedState;
 
     OMMVPLib(Builder<ViewT, PresenterT> builder) {
         this.lifecycleOwner = builder.lifecycleOwner;
@@ -90,6 +90,11 @@ public class OMMVPLib<ViewT extends Presenter.View, PresenterT extends Presenter
         private LifecycleOwner lifecycleOwner;
         private LoaderFactory<ViewT, PresenterT> loaderFactory;
         private InstanceStatePublisher statePublisher;
+
+        public Builder<ViewT, PresenterT> loaderId(int loaderId) {
+            this.loaderId = loaderId;
+            return this;
+        }
 
         /**
          * If you want the presenter to be able to store data via {@link Activity#onSaveInstanceState(Bundle)} then you need to call this.
