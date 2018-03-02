@@ -13,16 +13,26 @@ public class PresenterInjectionCallback<
 
     private final TargetT toInjectInto;
 
-    public PresenterInjectionCallback(TargetT toInjectInto) {this.toInjectInto = toInjectInto;}
+    public PresenterInjectionCallback(TargetT toInjectInto) {
+        this.toInjectInto = toInjectInto;
+    }
 
     @Override
     public void onPresenterReady(PresenterT presenter) {
         final ComponentT component = presenter.getComponent();
         component.inject(toInjectInto);
+        if (toInjectInto instanceof PresenterInjectionCallback.Listener<?>) {
+            //noinspection unchecked
+            ((Listener<ComponentT>) toInjectInto).onInjected(component);
+        }
     }
 
     @Override
     public void onPresenterDestroyed() {
 
+    }
+
+    public interface Listener<ComponentT> {
+        void onInjected(ComponentT component);
     }
 }
