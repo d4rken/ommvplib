@@ -1,3 +1,6 @@
+This library is __deprecated__ , its successor is [MVP-Bakery](https://github.com/d4rken/mvp-bakery).
+
+
 # One More MVP Lib
 [ ![Download](https://api.bintray.com/packages/darken/maven/ommvplib/images/download.svg) ](https://bintray.com/darken/maven/ommvplib/_latestVersion)
 [![Coverage Status](https://coveralls.io/repos/github/d4rken/ommvplib/badge.svg)](https://coveralls.io/github/d4rken/ommvplib)
