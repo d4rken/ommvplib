@@ -12,7 +12,7 @@ The demo application shows how to use the library and includes examples on how t
 ## Quickstart
 Add the library:
 ```groovy
-implementation 'eu.darken.ommvplib:library:0.2.1'
+implementation 'eu.darken.ommvplib:library:0.2.2'
 ```
 ### Without Dagger
 The `Presenter` and the `View` that our `Activity` will implement.
